@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/04/30 10:58:23 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/15 18:32:35 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/20 16:51:58 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,17 @@ char	*ft_checktet(char **blok)
 		while (c != 4 && hc < 5)
 		{
 			if (blok[l][c] == '#')
-				 tet[hc] = ft_hash(blok, l, c);
+				tet[hc] = ft_hash(blok, l, c);
 			hc = ft_strlen(tet);
 			c++;
 		}
 		l++;
 	}
 	if (hc != 4 || ft_strchr(tet, 'n') != NULL)
+	{
+		ft_putnbr(hc);
 		return (NULL);
-
+	}
 	while (tet[0] > 4)
 	{
 		hc = 0;
