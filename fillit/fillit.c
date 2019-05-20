@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/02 14:09:57 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/15 21:37:46 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/20 22:03:29 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,42 @@
 #include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+int	main(void/*int argc, char **argv*/)
 {
-	int		i;
-	char	**tetarr;
-	char	**square;
-	short	tets;
-	int		min_sq;
-	int		a;
+	int i;
+	unsigned short	tet;
+	unsigned short	tet2;
+	unsigned short	square;
+	unsigned short	newsquare;
+	//int		min_sq;
 	short	row;
 	short	col;
 
+	i = 0;
+	tet = 51;
+	tet2 = 15;
 	col = 0;
 	row = 0;
-	i = 0;
-	a = 6;
-	tetarr = (char **)ft_memalloc(sizeof(char *) * 26);
-	tetarr[4] = ft_strnew(0);
-	if (argc != 2)
-		return (0);
-	tets = ft_isvalid(&tetarr, open(argv[1], O_RDONLY));
-	if (tets == 0)
+	square = 0;
+	//check argc
+	square = tet ^ square;
+	ft_putnbr(square);
+	newsquare = square;
+	while ((~newsquare>>i & tet2) != tet2)
 	{
-		ft_putendl("Invalid file");
-		return (-1);
+		ft_putstr("nbr :");
+		ft_putnbr((~newsquare & tet2));
+		ft_putendl("");
+		newsquare = newsquare >> 1;
+		i++;
 	}
-	min_sq = tets * 4;
+	tet2 = tet2 << i;
+	square = tet2 ^ square;
+	ft_putnbr(square);
+	/*min_sq = tets * 4;
 	while (ft_sqrt(min_sq) == 0)
 		min_sq++;
 	min_sq = ft_sqrt(min_sq);
-	square = (char **)ft_memalloc(sizeof(char *) * min_sq);
-	ft_putendl("");
-	while (row < min_sq)
-	{
-		square[row] = ft_strnew(min_sq);
-		ft_memset(square[row], '.', min_sq);	
-		row++;
-	}
-	ft_putendl("recursion initiation");
-	ft_putnbr(ft_recursive(&square, 0, &tetarr));
-	ft_putendl("recursion complete");
-	while (i < 4)
-	{
-		ft_putendl(square[i]);
-		i++;
-	}
+	*/
 	return (0);
 }
