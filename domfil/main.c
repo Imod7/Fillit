@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/15 14:44:26 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/05/20 15:55:47 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/05/20 21:41:01 by dsaripap      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void				save_tolist(t_list **tetr_lst, unsigned short num)
 {
 	t_list			*tetrm;
 
-	//printf(" Tetrimino as short %d \n", num);
 	tetrm = ft_lstnew(&num, 16);
 	ft_lstaddend(tetr_lst, tetrm);
 }
@@ -29,79 +28,68 @@ void				save_tolist(t_list **tetr_lst, unsigned short num)
 void				place_tetriminos(t_list **tetr_lst)
 {
 	t_list			*temp;
+	int				x;
 
+	x = 2;
+	x = x << 3;
+	printf("x = %d\n", x);
 	temp = *tetr_lst;
 	printf("1st tetr = %d\n", *(unsigned short *)(temp->content));
-	*(unsigned short *)(temp->content) = *(unsigned short *)(temp->content) << 3;
-	printf("1st tetr shifted on 1st position= %d\n", *(unsigned short *)(temp->content));
 }
 
-int					read_tetriminos(int fd, char *argv, t_list **tetr_lst)
+int					read_line(int fd, unsigned short *n, int bytes, size_t pos)
 {
-	int 			bytes_read;
-	char			buf[2];
-	size_t 			row;
 	size_t			column;
-	unsigned short 	num;
-	unsigned short	pos;
-	int			m;
-	char 			*tetr_char;
+	char			buf[2];
 
-	pos = 32768;
-	num = 0;
+	column = 0;
+	while (column < 4)
+	{
+		bytes = read(fd, buf, 1);
+		if (bytes == -1)
+			return (-1);
+		if (*buf == '#')
+			*n |= 1 << pos;
+		pos++;
+		column++;
+	}
+	return (pos);
+}
+
+int					read_file(int fd, char *argv, t_list **tetr_lst)
+{
+	int				bytes_read;
+	unsigned short	num;
+	char			buf[2];
+	size_t			row;
+	size_t			pos;
+
 	bytes_read = 2;
-	tetr_char = (char *)malloc(sizeof(char)*16);
 	while (bytes_read > 0 && bytes_read != 1)
 	{
-		//m = 0;
+		pos = 0;
 		row = 0;
-		while (row < 4)
+		num = 0;
+		while (row < 3)
 		{
-			column = 0;
-			while (column < 4)
-			{
-				bytes_read = read(fd,buf,1);
-				if (bytes_read == -1)
-					return (-1);
-				if (*buf == '.')
-					tetr_char[m] = '0';
-				else if (*buf == '#')
-				{
-					num = num + pos;
-					tetr_char[m] = '1';
-				}
-				pos = pos / 2;
-				column++;
-				printf(" tetr[%d]=%c \n", m, tetr_char[m]);
-				m++;
-			}
-			if (row == 3)
-			{
-				printf(" result string= %s \n saving as short %d in node \n", tetr_char, num);
-				printf("\n\n");
-				save_tolist(tetr_lst, num);
-				bytes_read = read(fd,buf,2);
-				pos = 32768;
-				num = 0;
-			}
-			else
-			{
-				printf("\n");
-				bytes_read = read(fd,buf,1);
-			}
 			row++;
+			pos = read_line(fd, &num, bytes_read, pos);
+			bytes_read = read(fd, buf, 1);
 		}
+		pos = read_line(fd, &num, bytes_read, pos);
+		save_tolist(tetr_lst, num);
+		bytes_read = read(fd, buf, 2);
 	}
 	return (0);
 }
 
 void				print_list(t_list **tetr_lst)
 {
-	t_list 			*temp;
+	t_list			*temp;
 	size_t			i;
 
 	i = 1;
-	printf("\n=== Printing Linked List with Tetriminos ===\n");
+	printf("\n=== Printing Linked List with Tetriminos ===\n\n");
 	temp = *tetr_lst;
 	while (temp != NULL)
 	{
@@ -135,9 +123,9 @@ int					main(int argc, char **argv)
 		if (fd < 0)
 			return (0);
 		tetr_lst = NULL;
-		read_tetriminos(fd, argv[1], &tetr_lst);
+		read_file(fd, argv[1], &tetr_lst);
 		print_list(&tetr_lst);
-		place_tetriminos(&tetr_lst);
+		//place_tetriminos(&tetr_lst);
 		close(fd);
 	}
 }
