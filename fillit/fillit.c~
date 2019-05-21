@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/02 14:09:57 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/21 20:22:04 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/21 20:04:03 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ int	main(void/*int argc, char **argv*/)
 	row = 0;
 	square = 0;
 	//check argc
-	ft_putbin(6144);
-	ft_putbin(384);
-	ft_putbin(24);
+	ft_putbin(51);
 	
 	/*min_sq = tets * 4;
 	while (ft_sqrt(min_sq) == 0)

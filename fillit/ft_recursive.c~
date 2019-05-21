@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/21 20:24:34 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/21 20:06:06 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int ft_place(unsigned short square, int offset, unsigned short *tets)
 	i = 0;
 	while ((~square >> i & tet) != tet)
 		i++;
-	if (tet << i & 6144 == 6144 || tet << i & 384 == 384 || tet << i & 24 == 24)
-		//tet goes over the border
 	square = tet << i ^ square;
 	ft_putbin(square);
 }
