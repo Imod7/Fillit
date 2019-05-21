@@ -17,36 +17,9 @@
 	if return == -1 : none of the available tets fit
 	if return == -2 : no tets available
 */
-int	ft_place(char ***square, int offset,  char **ar, int tet)
+int ft_place(unsigned short square, int offset, unsigned short *tets)
 {
-	int i;
-
-	while (ar[tet][0] != '\0')
-	{
-		i = 0;
-		while (ar[tet][4] == 1)
-			tet++;
-		if (ar[tet][0] == '\0')
-			break ;
-		while (i < 4 && ar[tet][3] + offset < 16)
-		{
-			if (square[0][(ar[tet][i] + offset) / 4][(ar[tet][i] + offset) % 4] == '.')
-				i++;
-			else
-				break ;
-		}
-		if (i == 4)
-		{
-			while (i > 0)
-			{
-				i--;
-				square[0][(ar[tet][i] + offset) / 4][(ar[tet][i] + offset) % 4] = (char)(tet + 65);
-			}
-			return (tet);
-		}
-		tet++;
-	}
-	return (-1);
+	while ()
 }
 
 int	ft_replace(char ***square, int offset, char ***ar, int tet)
@@ -69,7 +42,7 @@ int	ft_replace(char ***square, int offset, char ***ar, int tet)
 */
 
 //for some reason the first tet cant get placed so it returns 1 and stops the recursion
-int	ft_recursive(char ***square, int offset, char ***tetarr /*int maxhole*/)
+int	ft_recursive(unsigned short square, int offset, unsigned short *tets /*int maxhole*/)
 {
 	int		tet;
 
