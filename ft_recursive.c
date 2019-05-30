@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/30 15:45:19 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/30 18:52:33 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,23 @@ int ft_countbit(unsigned short nb)
 		i = i << 1;
 	}
 	return (count);
+}
+
+void	ft_putsquare(unsigned short square)
+{
+	int i;
+
+	i = 0;
+	while (1 << i != 0)
+	{
+		if ((1 << i & square) == i)
+			ft_putchar('#');
+		else
+			ft_putchar('.');
+		if ((i + 1) % 4 == 0)
+			ft_putchar('\n');
+		i++;
+	}
 }
 
 //place tet at first available spot
@@ -77,6 +94,7 @@ int	ft_recursive(unsigned short square, int offset, unsigned short *tets, int tc
 	unsigned short newsquare;
 	int ret;
 
+	ft_putsquare(square);
 	if (tc != 0)
 		tets[tc - 1] = 1;
 	if (ft_checkend(tets) == 1)
