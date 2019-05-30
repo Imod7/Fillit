@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/03/21 15:34:25 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/02 16:32:36 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/21 18:42:46 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+void				ft_putbin(int nb);
+int					ft_recursive_power(int nb, int power);
 int					get_next_line(int fd, char **line);
 int					ft_sqrt(int nb);
 void				ft_printmem(char *data, size_t size);

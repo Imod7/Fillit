@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/02 14:09:57 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/20 17:20:18 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/30 16:29:04 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,50 +16,27 @@
 #include "fillit.h"
 #include "libft.h"
 
-int	main(int argc, char **argv)
+int	main(void/*int argc, char **argv*/)
 {
-	int		i;
-	char	**tetarr;
-	char	**square;
-	short	tets;
-	int		min_sq;
-	int		a;
-	short	row;
-	short	col;
+	unsigned short	*tets;
+	unsigned short	square;
 
-	col = 0;
-	row = 0;
-	i = 0;
-	a = 6;
-	tetarr = (char **)ft_memalloc(sizeof(char *) * 26);
-	tetarr[4] = ft_strnew(0);
-	if (argc != 2)
-		return (0);
-	tets = ft_isvalid(&tetarr, open(argv[1], O_RDONLY));
-	if (tets == 0)
-	{
-		ft_putendl("Invalid file");
-		return (-1);
-	}
-	min_sq = tets * 4;
-	while (ft_sqrt(min_sq) == 0)
+	test = 0;
+	ft_putnbr(sizeof(test));
+	tets = malloc(sizeof(unsigned short) * 5);
+	tets[0] = 52224;
+	tets[1] = 52224;
+	tets[2] = 52224;
+	tets[3] = 52224;
+	tets[4] = 0;
+	square = 0;
+	//square = ft_recursive(square, 0, tets, 0);
+	//ft_putbin(square);
+	//check argc
+	/*tofill = tets * 4;
+	min_sq = 2;
+	while (tofill > min_sq * min_sq)
 		min_sq++;
-	min_sq = ft_sqrt(min_sq);
-	square = (char **)ft_memalloc(sizeof(char *) * min_sq);
-	ft_putendl("");
-	while (row < min_sq)
-	{
-		square[row] = ft_strnew(min_sq);
-		ft_memset(square[row], '.', min_sq);	
-		row++;
-	}
-	ft_putendl("recursion initiation");
-	ft_putnbr(ft_recursive(&square, 0, &tetarr));
-	ft_putendl("recursion complete");
-	while (i < 4)
-	{
-		ft_putendl(square[i]);
-		i++;
-	}
+	*/
 	return (0);
 }

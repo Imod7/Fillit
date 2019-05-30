@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   fillit.h                                           :+:    :+:            */
+/*   testbin.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/05/02 16:15:20 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/29 18:57:52 by ravan-de      ########   odam.nl         */
+/*   Created: 2019/05/21 18:07:00 by ravan-de      #+#    #+#                 */
+/*   Updated: 2019/05/21 18:28:25 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __FILLIT_H
-# define __FILLIT_H
+#include "libft.h"
 
-int		ft_isvalid(char ***tetarr, int fd);
-int		ft_recursive(unsigned short square, int offset, unsigned short *tets, int tc);
+int	main(void)
+{
+	char *str;
 
-#endif
+	str = ft_strnew(16);
+	ft_memset(str, 48, 16);
+	ft_putbin(&str, 51, 16);
+	ft_putendl(str);
+	ft_memset(str, 48, 16);
+	ft_putbin(&str, 15, 16);
+	ft_putendl(str);
+	ft_memset(str, 48, 16);
+	ft_putbin(&str, 10, 16);
+	ft_putendl(str);
+	ft_memset(str, 48, 16);
+	return (0);
+}
