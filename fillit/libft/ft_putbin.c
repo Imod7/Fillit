@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/21 16:54:09 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/21 18:43:32 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/23 13:30:56 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_putbin(int nb)
 
 	str = ft_strnew(16);
 	ft_memset(str, 48, 16);
-	ft_rec(&str, nb, 16);
+	ft_rec(&str, nb, 15);
 	ft_putendl(str);
 	ft_strdel(&str);
 }

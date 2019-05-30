@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/02 14:09:57 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/21 20:22:04 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/30 16:29:04 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,25 @@
 
 int	main(void/*int argc, char **argv*/)
 {
-	int i;
-	unsigned short	tet;
-	unsigned short	tet2;
+	unsigned short	*tets;
 	unsigned short	square;
-	//int		min_sq;
-	short	row;
-	short	col;
 
-	i = 0;
-	tet = 51;
-	tet2 = 51;
-	col = 0;
-	row = 0;
+	test = 0;
+	ft_putnbr(sizeof(test));
+	tets = malloc(sizeof(unsigned short) * 5);
+	tets[0] = 52224;
+	tets[1] = 52224;
+	tets[2] = 52224;
+	tets[3] = 52224;
+	tets[4] = 0;
 	square = 0;
+	//square = ft_recursive(square, 0, tets, 0);
+	//ft_putbin(square);
 	//check argc
-	ft_putbin(6144);
-	ft_putbin(384);
-	ft_putbin(24);
-	
-	/*min_sq = tets * 4;
-	while (ft_sqrt(min_sq) == 0)
+	/*tofill = tets * 4;
+	min_sq = 2;
+	while (tofill > min_sq * min_sq)
 		min_sq++;
-	min_sq = ft_sqrt(min_sq);
 	*/
 	return (0);
 }
