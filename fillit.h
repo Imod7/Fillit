@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/05/18 22:01:12 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/05/31 15:11:20 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,8 @@ typedef struct			tetr_list
 	unsigned short		*tetr;
 	struct tetr_list	*next;
 }						tetris_list;
+
+int						read_file(int fd, t_list **tetr_lst);
+int						ft_recursive(unsigned short square, int offset, unsigned short *tets, int tc);
 
 #endif
