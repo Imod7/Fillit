@@ -6,11 +6,13 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 15:08:28 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/31 15:34:46 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include "libft.h"
 #include "fillit.h"
 
@@ -40,12 +42,32 @@ void				print_list(t_list **tetr_lst)
 	}
 }
 
+unsigned short		*lst2arr(t_list *lst)
+{
+	unsigned short	*tets;
+	int				tetcount;
+
+	tets = (unsigned short *)malloc(sizeof(unsigned short) * 26);
+	tetcount = 0;
+	while (lst->next != NULL)
+	{
+		tets[tetcount] = (unsigned short)(lst->content);
+		lst = lst->next;
+		tetcount++;
+	}
+	tets[tetcount + 1] = (unsigned short)(lst->content);
+	tets[tetcount + 2] = 0;
+	return (tets);
+}
+
 int					main(int argc, char **argv)
 {
 	int				fd;
 	t_list			*tetr_lst;
 	int				output;
+	unsigned short	square;
 
+	square = 0;
 	if (print_usage(argc) == 0)
 		return (0);
 	else
@@ -62,7 +84,7 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
-		//place_tetriminos(&tetr_lst);
+		square = ft_recursive(0, 0, lst2arr(tetr_lst), 0);
 		close(fd);
 	}
 	return (0);

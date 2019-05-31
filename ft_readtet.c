@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:41:34 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 15:09:51 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/31 15:35:49 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int					tetr_calc(size_t j, unsigned short n)
 
 //read_tetrimino implies that reading happens in the function, but it only checks, so i changed it to check_tet.
 //what is j and n?, j is an index but what does int index?
-int					check_tet(char *buf, unsigned short *n, int bytes)
+int					check_tet(char *buf, unsigned short *n, size_t bytes)
 {
 	size_t			j;
 	size_t			htags;
