@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 15:34:46 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/05/31 18:56:11 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ unsigned short		*lst2arr(t_list *lst)
 	tetcount = 0;
 	while (lst->next != NULL)
 	{
-		tets[tetcount] = (unsigned short)(lst->content);
+		tets[tetcount] = *(unsigned short *)(lst->content);
 		lst = lst->next;
 		tetcount++;
 	}
-	tets[tetcount + 1] = (unsigned short)(lst->content);
-	tets[tetcount + 2] = 0;
+	tets[tetcount] = *(unsigned short *)(lst->content);
+	tets[tetcount + 1] = 0;
 	return (tets);
 }
 
@@ -66,6 +66,7 @@ int					main(int argc, char **argv)
 	t_list			*tetr_lst;
 	int				output;
 	unsigned short	square;
+	unsigned short	*tets;
 
 	square = 0;
 	if (print_usage(argc) == 0)
@@ -84,7 +85,13 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
+		tets = lst2arr(tetr_lst);
+		ft_putbin(tets[0]);
+		ft_putbin(785);
+		ft_putbin(tets[2]);
+		ft_putbin(tets[3]);
 		square = ft_recursive(0, 0, lst2arr(tetr_lst), 0);
+		ft_putsquare(square);
 		close(fd);
 	}
 	return (0);
