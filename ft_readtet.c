@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:41:34 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/11 15:21:41 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/11 18:05:57 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int					read_file(int fd, t_list **tetr_lst)
 		num = 0;
 		if (check_tet(buf, &num, bytes_read) == -1)
 			return (-1);
+		num = shift_to_topleft(num);
 		save_tolist(tetr_lst, num);
 		bytes_read = read(fd, buf, 21);
 		if (bytes_read == -1)

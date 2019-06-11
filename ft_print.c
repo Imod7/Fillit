@@ -6,11 +6,12 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/09 12:46:58 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/09 13:05:11 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/11 18:02:01 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include <stdio.h>
 
 void				print_board(unsigned short *board)
 {
