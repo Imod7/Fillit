@@ -6,19 +6,11 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/10 22:48:53 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/10 22:48:59 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/11 15:19:49 by dsaripap      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-void				save_tolist(t_list **tetr_lst, unsigned short num)
-{
-	t_list			*tetrm;
-
-	tetrm = ft_lstnew(&num, 16);
-	ft_lstaddend(tetr_lst, tetrm);
-}
 
 unsigned short		shift_to_topleft(unsigned short num)
 {
