@@ -6,12 +6,14 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/11 15:26:23 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/11 16:23:01 by dsaripap      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
 # define FILLIT_H
+
+#include "libft.h"
 
 typedef struct			tetr_list
 {
