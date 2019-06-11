@@ -138,6 +138,7 @@ int					read_file(int fd, t_list **tetr_lst)
 		num = 0;
 		if (check_tet(buf, &num, bytes_read) == -1)
 			return (-1);
+		num = shift_to_topleft(num);
 		save_tolist(tetr_lst, num);
 		bytes_read = read(fd, buf, 21);
 		if (bytes_read == -1)
