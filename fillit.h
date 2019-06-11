@@ -13,6 +13,7 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
+#include <stdio.h>
 #include "libft.h"
 
 #define ANSI_COLOR_CYAN		"\x1b[36m"
@@ -33,5 +34,6 @@ int						ft_recursive(unsigned short square, unsigned short offset, unsigned sho
 void					ft_putbin(int nb);
 void					ft_putsquare(unsigned short square);
 unsigned short			shift_to_topleft(unsigned short num);
+void					print_list(t_list **tetr_lst);
 
 #endif

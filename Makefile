@@ -6,13 +6,13 @@
 #    By: ravan-de <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/05/02 15:57:41 by ravan-de      #+#    #+#                  #
-#    Updated: 2019/06/11 15:26:54 by dsaripap      ########   odam.nl          #
+#    Updated: 2019/06/11 16:22:10 by dsaripap      ########   odam.nl          #
 #                                                                              #
 #******************************************************************************#
 
 NAME = fillit
 
-OBJ = ft_putsquare.o ft_putbin.o ft_recursive.o fillit.o ft_readtet.o ft_shiftsave.o
+OBJ = ft_putsquare.o ft_putbin.o ft_recursive.o fillit.o ft_readtet.o ft_shiftsave.o ft_print.o
 
 FLAGS = -Wall -Wextra -Werror
 
