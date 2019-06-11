@@ -26,22 +26,6 @@ int					print_usage(int argc)
 	return (1);
 }
 
-void				print_list(t_list **tetr_lst)
-{
-	t_list			*temp;
-	size_t			i;
-
-	i = 1;
-	printf("\n=== Printing Linked List with Tetriminos ===\n\n");
-	temp = *tetr_lst;
-	while (temp != NULL)
-	{
-		printf("node %lu -> %d \n", i, *(unsigned short *)(temp->content));
-		temp = temp->next;
-		i++;
-	}
-}
-
 unsigned short		*lst2arr(t_list *lst)
 {
 	unsigned short	*tets;
