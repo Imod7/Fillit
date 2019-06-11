@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/05/31 18:56:00 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/11 15:26:23 by dsaripap      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int						read_file(int fd, t_list **tetr_lst);
 int						ft_recursive(unsigned short square, unsigned short offset, unsigned short *tets, int tc);
 void					ft_putbin(int nb);
 void					ft_putsquare(unsigned short square);
+unsigned short			shift_to_topleft(unsigned short num);
 
 #endif
