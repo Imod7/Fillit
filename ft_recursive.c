@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 18:55:09 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/11 16:32:48 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,27 @@ int ft_countbit(unsigned short nb)
 }
 
 //place tet at first available spot
-int ft_place(unsigned short square, unsigned short offset, unsigned short tet)
+int ft_place(unsigned short square, unsigned short offset, unsigned short tet, int map_size)
 {
-	while ((tet & (unsigned short)32768) != 32768)
-		tet = tet << 1;
+	uint64_t mask;
+	map_size = 4;
 	ft_putbin(tet);
+	mask = mask >> (map_size - 1);
 	while (tet != 0)
 	{
 		while ((~square << offset & tet) != tet && offset < 17)
 			offset++;
+		while (mask != 1)
+		{
+			if ((mask & tet >> offset) == mask)
+			{
+				offset++;
+				continue ;
+			}
+			mask = mask >> map_size
+		}
 		if (ft_countbit(tet >> offset) != 4)
 			return (0);
-		if ((tet >> offset & 6144) == 6144 || (tet >> offset & 384) == 384 || (tet >> offset & 24) == 24)
-		{
-			offset++;
-			continue ;
-		}
 		return (tet >> offset ^ square);
 	}
 	return (0);
