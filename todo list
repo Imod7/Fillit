@@ -1,0 +1,5 @@
+make recursion work - r
+  - keep track of placed tets: set the final bit if placed
+store tets as uint64 - d
+place tets as uint64 in a board made up of 4 uint64's - r / d
+testing
