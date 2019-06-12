@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/11 19:23:27 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/12 17:12:06 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,29 @@ unsigned short		*lst2arr(t_list *lst)
 	return (tets);
 }
 
+int	ft_lstlen(t_list *lst)
+{
+	int len;
+
+	len = 1;
+	while (lst->next != NULL)
+	{
+		len++;
+		lst = lst->next;
+	}
+	return (len);
+}
+
 int					main(int argc, char **argv)
 {
 	int				fd;
 	t_list			*tetr_lst;
 	int				output;
+	int				map_size;
 	unsigned short	square;
 
 	square = 0;
+	map_size = 2;
 	if (print_usage(argc) == 0)
 		return (0);
 	else
@@ -68,8 +83,15 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
-		square = ft_recursive(0, 0, lst2arr(tetr_lst), 0);
-		ft_putsquare(square);
+		while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
+			map_size++;
+		while (square == 0 && map_size < 16)
+		{
+			ft_putnbr(map_size);
+			ft_putendl("");
+			square = ft_recursive(0, map_size, lst2arr(tetr_lst), 0);
+			map_size++;
+		}
 		close(fd);
 	}
 	return (0);

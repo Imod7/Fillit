@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/12 11:49:55 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/12 18:17:25 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,47 +27,48 @@
 */
 
 //count set bits
-int ft_countbit(unsigned short nb)
+/*int ft_countbit(unsigned short nb, int area)
 {
 	unsigned short i;
 	int count;
 
 	i = 1;
 	count = 0;
-	while (i != 0)
+	while ((1 << area & i) != i)
 	{
 		if ((i & nb) == i)
 			count++;
 		i = i << 1;
 	}
 	return (count);
-}
+	}*/
 
 //place tet at first available spot
-int ft_place(unsigned short square, unsigned short offset, unsigned short tet, int map_size)
+int ft_place(unsigned short square, int map_size, unsigned short tet)
 {
-	unsigned short mask;
+	int				offset;
+	unsigned short	mask;
+
+	offset = 0;
 	mask = 3;
-	map_size = 4;
-	//print_binary(tet, 4);
 	mask = mask << (map_size - 1);
-	while (tet != 0)
+	while ((mask & (tet << offset)) == mask && mask != 32768)
 	{
-			while (mask != 0)
-			{
-				ft_putstr("mask:");
-				ft_putbin(mask);
-				while ((~square >> offset & tet) != tet && offset < 17)
-					offset++;
-				while ((mask & (tet << offset)) == mask && mask != 32768)
-					offset++;
-				mask = mask << map_size;
-			}
-		if (ft_countbit(tet << offset) != 4)
-			return (0);
-		return (tet << offset ^ square);
+		offset += offset % 4;
+		mask = mask << map_size;
 	}
-	return (0);
+	while ((~square >> offset & tet) != tet && offset < 17)
+	{
+		offset++;
+		if ((mask & (tet << offset)) == mask && mask != 32768)
+		{
+			offset += offset % 4;
+			mask = mask << map_size;
+		}
+	}
+	if (offset >= 4 * map_size)
+		return (0);
+	return (tet << offset ^ square);
 }
 
 //check if all elements in *tets == 1, causing end of recursion
@@ -85,14 +86,14 @@ int	ft_checkend(unsigned short *tets)
 	return (0);
 }
 
-int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *tets, int tc)
+int	ft_recursive(unsigned short square, int map_size, unsigned short *tets, int tc)
 {
 	unsigned short newsquare;
 	unsigned short tet;
 	int ret;
 
 	ft_putendl("square: ");
-	ft_putsquare(square);
+	ft_putsquare(square, map_size);
 	ft_putendl("");
 	if (ft_checkend(tets) == 1)
 		return (square);
@@ -110,14 +111,19 @@ int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *t
 			ft_putendl("tc:");
 			print_binary(tets[tc], 4);
 			ft_putendl("");
-			newsquare = ft_place(square, offset, tets[tc], 4);
+			newsquare = ft_place(square, map_size, tets[tc]);
 			tc++;
 		}
 		tet = tets[tc - 1];
 		tets[tc - 1] = 1;
-		ret = ft_recursive(newsquare, offset, tets, 0);
+		ret = ft_recursive(newsquare, map_size, tets, 0);
 		if (ret == 0)
+		{
+			ft_putendl("recursion:");
+			ft_putsquare(square, map_size);
+			ft_putendl("");
 			tets[tc - 1] = tet;
+		}
 	}
 	return (ret);
 }
