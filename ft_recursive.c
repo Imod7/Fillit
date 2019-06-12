@@ -6,11 +6,12 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/11 20:19:09 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/12 11:49:55 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "libft.h"
 #include "fillit.h"
 
@@ -52,19 +53,16 @@ int ft_place(unsigned short square, unsigned short offset, unsigned short tet, i
 	mask = mask << (map_size - 1);
 	while (tet != 0)
 	{
-		while ((~square >> offset & tet) != tet && offset < 17)
-			offset++;
-		while (mask != 32768)
-		{
-			//ft_putstr("mask:");
-			//ft_putbin(mask);
-			if ((mask & (tet << offset)) == mask)
+			while (mask != 0)
 			{
-				offset++;
-				continue ;
+				ft_putstr("mask:");
+				ft_putbin(mask);
+				while ((~square >> offset & tet) != tet && offset < 17)
+					offset++;
+				while ((mask & (tet << offset)) == mask && mask != 32768)
+					offset++;
+				mask = mask << map_size;
 			}
-			mask = mask << map_size;
-		}
 		if (ft_countbit(tet << offset) != 4)
 			return (0);
 		return (tet << offset ^ square);
@@ -90,10 +88,12 @@ int	ft_checkend(unsigned short *tets)
 int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *tets, int tc)
 {
 	unsigned short newsquare;
+	unsigned short tet;
 	int ret;
 
 	ft_putendl("square: ");
 	ft_putsquare(square);
+	ft_putendl("");
 	if (ft_checkend(tets) == 1)
 		return (square);
 	ret = 0;
@@ -104,19 +104,20 @@ int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *t
 		while (newsquare == square || newsquare == 0)
 		{
 			while (tets[tc] == 1)
-			{
-				ft_putnbr(tc);
 				tc++;
-			}
 			if (tets[tc] == 0)
 				return (0);
-			ft_putstr("tc: ");
-			ft_putnbr(tc);
+			ft_putendl("tc:");
+			print_binary(tets[tc], 4);
+			ft_putendl("");
 			newsquare = ft_place(square, offset, tets[tc], 4);
 			tc++;
 		}
-		//figure out a way to keep track of placed tets
+		tet = tets[tc - 1];
+		tets[tc - 1] = 1;
 		ret = ft_recursive(newsquare, offset, tets, 0);
+		if (ret == 0)
+			tets[tc - 1] = tet;
 	}
 	return (ret);
 }
