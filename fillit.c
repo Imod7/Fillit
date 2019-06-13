@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/12 17:12:06 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/13 13:41:30 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int					main(int argc, char **argv)
 		while (square == 0 && map_size < 16)
 		{
 			ft_putnbr(map_size);
-			ft_putendl("");
+			ft_putendl(" map_size");
 			square = ft_recursive(0, map_size, lst2arr(tetr_lst), 0);
 			map_size++;
 		}
