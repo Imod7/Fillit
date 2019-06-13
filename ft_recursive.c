@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/13 15:28:17 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/13 15:41:09 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,8 @@ int ft_place(unsigned short square, int map_size, unsigned short tet)
 
 	offset = 0;
 	mask = 3 << (map_size - 1);
-	while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
-		mask = mask >> 4;
-	if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
-		offset += 4 - offset % 4 + 4 - map_size;
-	else
-		mask = 3 << (map_size - 1);
+	if ((mask & (tet << offset)) == mask)
+		return (0);
 	while ((~square >> offset & tet) != tet && offset < 20)
 	{
 		offset++;
