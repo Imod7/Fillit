@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/13 15:41:09 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/18 17:11:14 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,33 @@
 		- none of the tets can be placed
 */
 
+//all max_width represent the max map_size and will be set to 16
+//all 32768's will be replaced with 9,223,372,036,854,775,807
+
 //count set bits
-//when map_size != 4: count fucks up;
-int ft_countbit(unsigned short nb, int map_size)
+//#define (max_width - map_size) jump to next line if end of board/map_size reached
+int ft_countbit(unsigned short tet, int map_size)
 {
 	unsigned short i;
 	int count;
 
 	i = 1;
 	count = 0;
-	while (i < 18)
+	while (i <= max_width * max_width)
 	{
 		if (i % (map_size + 1) == 0 && i != 0)
-			i += 4 - map_size;
-		if ((1 << (i - 1) & nb) == 1 << (i - 1))
+			i += max_width - map_size;
+		if ((1 << (i - 1) & tet) == 1 << (i - 1))
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-//place tet at first available spot
+//void	ft_cpyend()
+
+//#define ((tet << offset & ~square) != tet << offset) shift square until tet fits, offset can then be used to shift tet and place; 
+//#define ((max_width - offset % map_size) + (max_width - map_size)) jump  tet to start of next line;
 int ft_place(unsigned short square, int map_size, unsigned short tet)
 {
 	int				offset;
@@ -56,18 +62,24 @@ int ft_place(unsigned short square, int map_size, unsigned short tet)
 	mask = 3 << (map_size - 1);
 	if ((mask & (tet << offset)) == mask)
 		return (0);
-	while ((~square >> offset & tet) != tet && offset < 20)
+	while ((tet << offset & ~square) != (tet << offset) && offset < max_width * max_width)
 	{
 		offset++;
 		while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
-			mask = mask << 4;
+		{
+			mask = mask << max_width;
+		}
 		if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
-			offset += 4 - offset % 4 + 4 - map_size;
+			offset += (max_width - offset % map_size) + (max_width - map_size);
 		else
 			mask = 3 << (map_size - 1);
 	}
 	if (ft_countbit(tet << offset, map_size) != 4)
+	{
+		//if not last strip: copy all botom pixels which are >= offset, to tet of next strip and shift tet
+		//else ret
 		return (0);
+	}
 	return (tet << offset ^ square);
 }
 
@@ -88,9 +100,9 @@ int	ft_checkend(unsigned short *tets)
 
 int	ft_recursive(unsigned short square, int map_size, unsigned short *tets, int tc)
 {
-	unsigned short newsquare;
-	unsigned short tet;
-	int ret;
+	unsigned short	newsquare;
+	unsigned short	tet;
+	int				ret;
 
 	ft_putstr("square ");
 	ft_putnbr(map_size);

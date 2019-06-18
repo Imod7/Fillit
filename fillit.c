@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/13 13:41:30 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/14 18:06:57 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,21 @@ int	ft_lstlen(t_list *lst)
 
 int					main(int argc, char **argv)
 {
+	uint64_t		*board;
+	int				s;
 	int				fd;
 	t_list			*tetr_lst;
 	int				output;
 	int				map_size;
 	unsigned short	square;
 
+	s = 0;
+	board = (uint64_t *)malloc(8 * sizeof(uint64_t));
+	while (s < 8)
+	{
+		board[s] = 0;
+		s++;
+	}
 	square = 0;
 	map_size = 2;
 	if (print_usage(argc) == 0)
