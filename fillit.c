@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/19 17:14:18 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 20:10:57 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,12 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
-		print_board(board);
 		while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
 			map_size++;
-		while (square == 0 && map_size < 16)
+		while (ft_recursive(board, map_size, lst2arr(tetr_lst), 0) == 0 && map_size < 16)
 		{
 			ft_putnbr(map_size);
 			ft_putendl(" map_size");
-			square = ft_recursive(board, map_size, lst2arr(tetr_lst), 0);
 			map_size++;
 		}
 		close(fd);

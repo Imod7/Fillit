@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/19 19:31:05 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 20:48:41 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 */
 
 //all max_width represent the max map_size and will be set to 16
-//all 32768's will be replaced with 9,223,372,036,854,775,807
+//all 32768's will be replaced with 9223372036854775807
 
 //count set bits
 //#define (max_width - map_size) jump to next line if end of board/map_size reached
@@ -53,15 +53,20 @@ int	ft_place(t_board strip, t_board strip_next, int map_size, uint64_t tet)
 {
 	int			offset;
 	uint64_t	mask;
+	uint64_t	max;
 
-	offset = 0;
+	max = 9223372036854775807;
+	offset = 1;
 	mask = 3 << (map_size - 1);
-	offset++;
-	if ((mask & (tet << offset)) == mask)
+	if (strip.tet == 0)
+		return (1);
+	if ((mask & (strip.tet << offset)) == mask)
 		return (0);
-	while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
+	while ((mask & (strip.tet << offset)) != mask && mask != 1 && mask != 0 && mask != max)
+	{
 		mask = mask << max_width;
-	if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
+	}
+	if (mask != 1 && mask != 0 && mask != max)
 	{
 			offset += (max_width - offset % map_size) + (max_width - map_size);
 			strip_next.tet = strip_next.tet << ((max_width - offset % map_size) + (max_width - map_size));
@@ -78,13 +83,17 @@ int	ft_placer(t_board *board, int map_size, uint64_t tet)
 	int ret;
 
 	ret = 0;
-	while (ret != 4)
+	board[0].tet = tet;
+	while (ret < 3)
 	{
-		ret += ft_place(board[0], board[1], map_size, tet);
-		ret += ft_place(board[1], board[2], map_size, tet);
-		ret += ft_place(board[2], board[3], map_size, tet);
-		ret += ft_place(board[3], board[3], map_size, tet);
-		if (ft_countbit(board[3].tet, map_size) != 4)
+		ret = 0;
+		ret += ft_place(board[0], board[1], map_size, board[0].tet);
+		ret += ft_place(board[1], board[2], map_size, board[1].tet);
+		ret += ft_place(board[2], board[3], map_size, board[2].tet);
+		ret += ft_place(board[3], board[3], map_size, board[3].tet);
+		ft_putnbr(ret);
+		ft_putendl("");
+		if (ft_countbit(board[3].tet, map_size) != 4 && board[2].tet == 0 && board[1].tet == 0 && board[0].tet == 0)
 			return (0);
 	}
 	board[0].state |= board[0].tet;
@@ -142,6 +151,11 @@ int	ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc)
 	int			placeret;
 	int			ret;
 
+	ft_putstr("BOARD: ");
+	ft_putnbr(map_size);
+	ft_putendl("");
+	print_board(board);
+	ft_putendl("");
 	if (ft_checkend(tets) == 1)
 		return (1);
 	oldboard = (t_board *)ft_memalloc(sizeof(t_board) * 4);
@@ -158,6 +172,9 @@ int	ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc)
 				tc++;
 			if (tets[tc] == 0)
 				return (0);
+			ft_putendl("tet");
+			print_binary(tets[tc], 4);
+			ft_putendl("");
 			placeret = ft_placer(board, map_size, tets[tc]);
 			tc++;
 		}
@@ -165,7 +182,12 @@ int	ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc)
 		tets[tc - 1] = 1;
 		ret = ft_recursive(board, map_size, tets, 0);
 		if (ret == 0)
+		{
+			ft_putendl("RECURSION:");
+			print_board(board);
+			ft_putendl("");
 			tets[tc - 1] = tet;
+		}
 	}
 	return (ret);
 }
