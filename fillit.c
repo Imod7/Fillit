@@ -26,22 +26,6 @@ int					print_usage(int argc)
 	return (1);
 }
 
-void				print_list(t_list **tetr_lst)
-{
-	t_list			*temp;
-	size_t			i;
-
-	i = 1;
-	printf("\n=== Printing Linked List with Tetriminos ===\n\n");
-	temp = *tetr_lst;
-	while (temp != NULL)
-	{
-		printf("node %lu -> %d \n", i, *(unsigned short *)(temp->content));
-		temp = temp->next;
-		i++;
-	}
-}
-
 unsigned short		*lst2arr(t_list *lst)
 {
 	unsigned short	*tets;
@@ -66,7 +50,7 @@ int					main(int argc, char **argv)
 	t_list			*tetr_lst;
 	int				output;
 	unsigned short	square;
-	unsigned short	*tets;
+	// unsigned short	*tets;
 
 	square = 0;
 	if (print_usage(argc) == 0)
@@ -85,13 +69,13 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
-		tets = lst2arr(tetr_lst);
-		ft_putbin(tets[0]);
-		ft_putbin(785);
-		ft_putbin(tets[2]);
-		ft_putbin(tets[3]);
-		square = ft_recursive(0, 0, lst2arr(tetr_lst), 0);
-		ft_putsquare(square);
+		// tets = lst2arr(tetr_lst);
+		// ft_putbin(tets[0]);
+		// ft_putbin(785);
+		// ft_putbin(tets[2]);
+		// ft_putbin(tets[3]);
+		// square = ft_recursive(0, 0, lst2arr(tetr_lst), 0);
+		// ft_putsquare(square);
 		close(fd);
 	}
 	return (0);

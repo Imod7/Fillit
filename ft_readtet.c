@@ -15,75 +15,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void				save_tolist(t_list **tetr_lst, unsigned short num)
-{
-	t_list			*tetrm;
-
-	tetrm = ft_lstnew(&num, 16);
-	ft_lstaddend(tetr_lst, tetrm);
-}
-
-//what is num and i?
-int					check_neighbours(unsigned short num)
-{
-	unsigned short	temp;
-	int				neighbours;
-	size_t			i;
-
-	neighbours = 0;
-	i = 0;
-	while (i < 16)
-	{
-		//Checking which bits are set or not
-		//we AND the bit with a 1. if the bit is set the result is 1 
-		//else is 0.
-		temp = num & (1 << i);
-		if (temp != 0)
-		{
-			//Checking if bit is set
-			//4 to left
-			if (num & (temp >> 4))
-				neighbours++;
-			//4 to right
-			if (num & (temp << 4))
-				neighbours++;
-			//1 to left
-			if (num & (temp >> 1))
-				neighbours++;
-			//1 to right
-			if (num & (temp << 1))
-				neighbours++;
-		}
-		i++;
-	}
-	return (neighbours);
-}
-
-int					endline(int num)
-{
-	while (num > 0)
-		num = num - 5;
-	if (num == 0)
-		return (1);
-	return (0);
-}
-
-//what are j and n?
-int					tetr_calc(size_t j, unsigned short n)
-{
-	if (j >= 19)
-		n |= 1 << (j - 4);
-	else if (j >= 14)
-		n |= 1 << (j - 3);
-	else if (j >= 9)
-		n |= 1 << (j - 2);
-	else if (j >= 4)
-		n |= 1 << (j - 1);
-	else if (j < 4)
-		n |= 1 << j;
-	return (n);
-}
-
 /*
 	read_tet checks for:
 		- between every tetrimino there is only one newline
@@ -92,32 +23,44 @@ int					tetr_calc(size_t j, unsigned short n)
 */
 
 //read_tetrimino implies that reading happens in the function, but it only checks, so i changed it to check_tet.
-//what is j and n?, j is an index but what does int index?
-int					check_tet(char *buf, unsigned short *n, size_t bytes)
+//changed j to tet_pos so its more obvious that its the position/index while we iterate the tetrimino bit by bit
+//also changed *n to *tet so its more obvious that its the tetrimino (or the number that represents the tetrimino)
+int					check_tet(char *buf, uint64_t *tet, int bytes)
 {
-	size_t			j;
+	int				tet_pos;
 	size_t			htags;
 
-	j = 0;
+	tet_pos = 0;
 	htags = 0;
-	while (j < bytes)
+	while (tet_pos < bytes)
 	{
-		if (j == 20 && buf[j] != '\n')
+		//Check that between every tetrimino there is a newline
+		//and not other characters
+		if (tet_pos == 20 && buf[tet_pos] != '\n')
 			return (-1);
-		if ((endline(j + 1) != 1) && j != 20 && buf[j] != '.' && buf[j] != '#')
+		//Check that all characters inside tetrimino are either . or #
+		//and that between tetriminos there is not more than 1 newline
+		//If it is not endofline & we are not in the newline between the 
+		//2 tetriminos (tet_pos != 20) & different than . or #
+		//then error
+		//I put tet_pos + 1 because of calculation in function isendofline
+		if ((endline(tet_pos + 1) != 1) && tet_pos != 20 && buf[tet_pos] != '.' && buf[tet_pos] != '#')
 			return (-1);
-		if ((endline(j + 1) == 1) && buf[j] != '\n')
+		//If at the end of line there is another character than newline
+		if ((endline(tet_pos + 1) == 1) && buf[tet_pos] != '\n')
 			return (-1);
-		if (buf[j] == '#')
+		if (buf[tet_pos] == '#')
 		{
 			htags++;
-			*n = tetr_calc(j, *n);
+			//printf(" \n we are in pos = %d \n", tet_pos);
+			*tet = tetr_calc((uint64_t)tet_pos, *tet);
 		}
-		j++;
+		tet_pos++;
 	}
 	if (htags != 4)
 		return (-1);
-	if (check_neighbours(*n) < 6)
+	//printf("\n j = %d , n = %llu   , neighbours = %d \n", j, *n, check_neighbours(*n));
+	if (check_neighbours(*tet) < 6)
 		return (-1);
 	return (0);
 }
@@ -125,7 +68,7 @@ int					check_tet(char *buf, unsigned short *n, size_t bytes)
 int					read_file(int fd, t_list **tetr_lst)
 {
 	int				bytes_read;
-	unsigned short	num;
+	uint64_t		tet;
 	char			buf[21];
 	int				no_of_tetr;
 
@@ -135,22 +78,37 @@ int					read_file(int fd, t_list **tetr_lst)
 		return (-1);
 	while (bytes_read == 21 && no_of_tetr < 26)
 	{
-		num = 0;
-		if (check_tet(buf, &num, bytes_read) == -1)
+		tet = 0;
+		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
+		printf("buf = '\n%s'\nbytes_read = %d ,tet = %llu \n", buf, bytes_read, tet);
+		if (check_tet(buf, &tet, bytes_read) == -1)
 			return (-1);
-		save_tolist(tetr_lst, num);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
+		printf("tet = %llu \n", tet);
+		print_binary(tet, 4);
+		tet = shift_to_topleft(tet);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits SHIFTED TOPLEFT \n" ANSI_COLOR_RESET);
+		print_binary(tet, 4);
+		save_tolist(tetr_lst, tet);
 		bytes_read = read(fd, buf, 21);
 		if (bytes_read == -1)
 			return (-1);
 		no_of_tetr++;
 	}
-	num = 0;
+	tet = 0;
 	if (bytes_read == 20 && buf[19] == '\n' && no_of_tetr < 26)
 	{
-		if (check_tet(buf, &num, bytes_read) == -1)
+		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
+		printf("buf = '\n%s'\nbytes_read = %d ,num = %llu \n", buf, bytes_read, tet);
+		if (check_tet(buf, &tet, bytes_read) == -1)
 			return (-1);
-		num = shift_to_topleft(num);
-		save_tolist(tetr_lst, num);	
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
+		printf("tet = %llu \n", tet);
+		print_binary(tet, 4);
+		tet = shift_to_topleft(tet);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits SHIFTED TOPLEFT \n" ANSI_COLOR_RESET);
+		print_binary(tet, 4);
+		save_tolist(tetr_lst, tet);	
 		no_of_tetr++;
 		return (0);
 	}
