@@ -42,7 +42,35 @@ void				print_board(unsigned short *board)
 	}
 }
 
-void				print_binary(unsigned short num, int size)
+void				print_binary(uint64_t num, int size)
+{
+	int				bit;
+	int				row;
+	int 			col;
+	uint64_t		mask;
+
+	bit = 0;
+	row = 0;
+	while (row < size)
+	{
+		col = 0;
+		while (col < (size * size))
+		{
+			mask = num >> bit;
+			//printf("\n mask = %llu \n", mask);
+			if (mask & 1)
+				printf("1 ");
+			else
+				printf("0 ");
+			bit++;
+			col++;
+		}
+		row++;
+		printf("\n");
+	}
+}
+
+void				print_binary_orig(unsigned short num, int size)
 {
 	int				bit;
 	int				row;
@@ -106,7 +134,7 @@ void				print_list(t_list **tetr_lst)
 	temp = *tetr_lst;
 	while (temp != NULL)
 	{
-		printf(" tetr/node %lu -> %d \n", i, *(unsigned short *)(temp->content));
+		printf(" tetr/node %lu -> %llu \n", i, *(uint64_t *)(temp->content));
 		temp = temp->next;
 		i++;
 	}

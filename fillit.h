@@ -13,6 +13,7 @@
 #ifndef FILLIT_H
 # define FILLIT_H
 
+#include <stdio.h>
 #include "libft.h"
 
 #define ANSI_COLOR_CYAN		"\x1b[36m"
@@ -42,6 +43,13 @@ int						read_file(int fd, t_list **tetr_lst);
 int						ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc);
 void					ft_putbin(int nb);
 void					ft_putsquare(unsigned short square);
-unsigned short			shift_to_topleft(unsigned short num);
+uint64_t				shift_to_topleft(uint64_t num);
+void					initialize_board(unsigned short **board);
+void					print_list(t_list **tetr_lst);
+int						check_neighbours(uint64_t num);
+uint64_t				tetr_calc(uint64_t j, uint64_t n);
+int						endline(int num);
+void					print_binary(uint64_t num, int size);
+void					save_tolist(t_list **tetr_lst, uint64_t num);
 
 #endif
