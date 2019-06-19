@@ -37,7 +37,6 @@ uint64_t			shift_to_topleft(uint64_t num)
 	//print_binary(num, 4);
 	//printf("\n");
 	i = 0;
-	//printf("num = %llu, pos = %lu \n", num, i);
 	x = 16;
 	y = 16;
 	while (i < 64)
