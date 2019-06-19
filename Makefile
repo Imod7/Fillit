@@ -13,7 +13,7 @@
 NAME = fillit
 
 OBJ = ft_putsquare.o ft_putbin.o ft_recursive.o fillit.o ft_readtet.o ft_shiftsave.o \
-	  ft_initialize_board.o ft_print.o
+	  ft_initialize_board.o ft_print.o ft_isvalid.o
 
 FLAGS = -Wall -Wextra -Werror
 

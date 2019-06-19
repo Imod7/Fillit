@@ -15,73 +15,46 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void				save_tolist(t_list **tetr_lst, unsigned short num)
+int					read_tetrimino(char *buf, uint64_t *n, int bytes)
 {
-	t_list			*tetrm;
+	int				j;
+	size_t			htags;
 
-	tetrm = ft_lstnew(&num, 16);
-	ft_lstaddend(tetr_lst, tetrm);
-}
-
-//what is num and i?
-int					check_neighbours(unsigned short num)
-{
-	unsigned short	temp;
-	int				neighbours;
-	size_t			i;
-
-	neighbours = 0;
-	i = 0;
-	while (i < 16)
+	j = 0;
+	htags = 0;
+	//bytes = 0;
+	while (j < bytes)
+	//while ((int)j < 9)
 	{
-		//Checking which bits are set or not
-		//we AND the bit with a 1. if the bit is set the result is 1 
-		//else is 0.
-		temp = num & (1 << i);
-		if (temp != 0)
+		//Check that between every tetrimino there is a newline
+		//and not other characters
+		if (j == 20 && buf[j] != '\n')
+			return (-1);
+		//Check that all characters inside tetrimino are either . or #
+		//and that between tetriminos there is not more than 1 newline
+		//If it is not endofline & we are not in the newline between the 
+		//2 tetriminos (j != 20) & different than . or #
+		//then error
+		//I put j+1 because of calculation in function isendofline
+		if ((endline(j + 1) != 1) && j != 20 && buf[j] != '.' && buf[j] != '#')
+			return (-1);
+		//If at the end of line there is another character than newline
+		if ((endline(j + 1) == 1) && buf[j] != '\n')
+			return (-1);
+		if (buf[j] == '#')
 		{
-			//Checking if bit is set
-			//4 to left
-			if (num & (temp >> 4))
-				neighbours++;
-			//4 to right
-			if (num & (temp << 4))
-				neighbours++;
-			//1 to left
-			if (num & (temp >> 1))
-				neighbours++;
-			//1 to right
-			if (num & (temp << 1))
-				neighbours++;
+			htags++;
+			//printf(" \n we are in pos = %d \n", j);
+			*n = tetr_calc((uint64_t)j, *n);
 		}
-		i++;
+		j++;
 	}
-	return (neighbours);
-}
-
-int					endline(int num)
-{
-	while (num > 0)
-		num = num - 5;
-	if (num == 0)
-		return (1);
+	if (htags != 4)
+		return (-1);
+	//printf("\n j = %d , n = %llu   , neighbours = %d \n", j, *n, check_neighbours(*n));
+	if (check_neighbours(*n) < 6)
+		return (-1);
 	return (0);
-}
-
-//what are j and n?
-int					tetr_calc(size_t j, unsigned short n)
-{
-	if (j >= 19)
-		n |= 1 << (j - 4);
-	else if (j >= 14)
-		n |= 1 << (j - 3);
-	else if (j >= 9)
-		n |= 1 << (j - 2);
-	else if (j >= 4)
-		n |= 1 << (j - 1);
-	else if (j < 4)
-		n |= 1 << j;
-	return (n);
 }
 
 /*
@@ -125,7 +98,7 @@ int					check_tet(char *buf, unsigned short *n, size_t bytes)
 int					read_file(int fd, t_list **tetr_lst)
 {
 	int				bytes_read;
-	unsigned short	num;
+	uint64_t		num;
 	char			buf[21];
 	int				no_of_tetr;
 
@@ -136,9 +109,16 @@ int					read_file(int fd, t_list **tetr_lst)
 	while (bytes_read == 21 && no_of_tetr < 26)
 	{
 		num = 0;
-		if (check_tet(buf, &num, bytes_read) == -1)
+		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
+		printf("buf = '\n%s'\nbytes_read = %d ,num = %llu \n", buf, bytes_read, num);
+		if (read_tetrimino(buf, &num, bytes_read) == -1)
 			return (-1);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
+		printf("tet = %llu \n", num);
+		print_binary(num, 4);
 		num = shift_to_topleft(num);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits SHIFTED TOPLEFT \n" ANSI_COLOR_RESET);
+		print_binary(num, 4);
 		save_tolist(tetr_lst, num);
 		bytes_read = read(fd, buf, 21);
 		if (bytes_read == -1)
@@ -148,9 +128,16 @@ int					read_file(int fd, t_list **tetr_lst)
 	num = 0;
 	if (bytes_read == 20 && buf[19] == '\n' && no_of_tetr < 26)
 	{
-		if (check_tet(buf, &num, bytes_read) == -1)
+		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
+		printf("buf = '\n%s'\nbytes_read = %d ,num = %llu \n", buf, bytes_read, num);
+		if (read_tetrimino(buf, &num, bytes_read) == -1)
 			return (-1);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
+		printf("tet = %llu \n", num);
+		print_binary(num, 4);
 		num = shift_to_topleft(num);
+		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits SHIFTED TOPLEFT \n" ANSI_COLOR_RESET);
+		print_binary(num, 4);
 		save_tolist(tetr_lst, num);	
 		no_of_tetr++;
 		return (0);
