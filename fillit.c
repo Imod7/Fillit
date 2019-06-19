@@ -110,6 +110,7 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
+		print_board(board);
 		while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
 			map_size++;
 		while (square == 0 && map_size < 16)

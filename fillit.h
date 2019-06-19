@@ -49,6 +49,7 @@ int						check_neighbours(uint64_t num);
 uint64_t				tetr_calc(uint64_t j, uint64_t n);
 int						endline(int num);
 void					print_binary(uint64_t num, int size);
+void					print_board(t_board *board);
 void					save_tolist(t_list **tetr_lst, uint64_t num);
 
 #endif
