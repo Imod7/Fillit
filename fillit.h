@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/19 17:08:22 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 18:52:02 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct			tetr_list
 }						tetris_list;
 
 void					print_list(t_list **tetr_lst);
-void					print_binary(unsigned short num, int size);
 int						read_file(int fd, t_list **tetr_lst);
 int						ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc);
 void					ft_putbin(int nb);
