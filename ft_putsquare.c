@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 18:54:51 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 18:55:28 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/13 12:33:42 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	ft_putsquare(unsigned short square)
 	int i;
 
 	i = 0;
-	while ((unsigned short)((unsigned short)32768 >> i) != 0)
+	while (i < 16)
 	{
-		if ((unsigned short)(((unsigned short)32768 >> i) & square) == (unsigned short)32768 >> i)
+		if ((unsigned short)(((unsigned short)1 << i) & square) == (unsigned short)1 << i)
 			ft_putchar('#');
 		else
 			ft_putchar('.');
@@ -27,4 +27,5 @@ void	ft_putsquare(unsigned short square)
 			ft_putchar('\n');
 		i++;
 	}
+	ft_putendl("");
 }

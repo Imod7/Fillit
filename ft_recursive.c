@@ -6,11 +6,12 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/05/31 18:55:09 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/18 17:11:14 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "libft.h"
 #include "fillit.h"
 
@@ -25,43 +26,61 @@
 		- none of the tets can be placed
 */
 
+//all max_width represent the max map_size and will be set to 16
+//all 32768's will be replaced with 9,223,372,036,854,775,807
+
 //count set bits
-int ft_countbit(unsigned short nb)
+//#define (max_width - map_size) jump to next line if end of board/map_size reached
+int ft_countbit(unsigned short tet, int map_size)
 {
 	unsigned short i;
 	int count;
 
 	i = 1;
 	count = 0;
-	while (i != 0)
+	while (i <= max_width * max_width)
 	{
-		if ((i & nb) == i)
+		if (i % (map_size + 1) == 0 && i != 0)
+			i += max_width - map_size;
+		if ((1 << (i - 1) & tet) == 1 << (i - 1))
 			count++;
-		i = i << 1;
+		i++;
 	}
 	return (count);
 }
 
-//place tet at first available spot
-int ft_place(unsigned short square, unsigned short offset, unsigned short tet)
+//void	ft_cpyend()
+
+//#define ((tet << offset & ~square) != tet << offset) shift square until tet fits, offset can then be used to shift tet and place; 
+//#define ((max_width - offset % map_size) + (max_width - map_size)) jump  tet to start of next line;
+int ft_place(unsigned short square, int map_size, unsigned short tet)
 {
-	while ((tet & (unsigned short)32768) != 32768)
-		tet = tet << 1;
-	ft_putbin(tet);
-	while (tet != 0)
+	int				offset;
+	unsigned short	mask;
+
+	offset = 0;
+	mask = 3 << (map_size - 1);
+	if ((mask & (tet << offset)) == mask)
+		return (0);
+	while ((tet << offset & ~square) != (tet << offset) && offset < max_width * max_width)
 	{
-		while ((~square << offset & tet) != tet && offset < 17)
-			offset++;
-		if (ft_countbit(tet >> offset) != 4)
-			return (0);
-		if ((tet >> offset & 6144) == 6144 || (tet >> offset & 384) == 384 || (tet >> offset & 24) == 24)
+		offset++;
+		while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
 		{
-			offset++;
-			continue ;
+			mask = mask << max_width;
 		}
-		return (tet >> offset ^ square);
+		if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
+			offset += (max_width - offset % map_size) + (max_width - map_size);
+		else
+			mask = 3 << (map_size - 1);
 	}
-	return (0);
+	if (ft_countbit(tet << offset, map_size) != 4)
+	{
+		//if not last strip: copy all botom pixels which are >= offset, to tet of next strip and shift tet
+		//else ret
+		return (0);
+	}
+	return (tet << offset ^ square);
 }
 
 //check if all elements in *tets == 1, causing end of recursion
@@ -79,16 +98,16 @@ int	ft_checkend(unsigned short *tets)
 	return (0);
 }
 
-int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *tets, int tc)
+int	ft_recursive(unsigned short square, int map_size, unsigned short *tets, int tc)
 {
-	unsigned short newsquare;
-	int ret;
+	unsigned short	newsquare;
+	unsigned short	tet;
+	int				ret;
 
-	ft_putnbr(tc);
-	ft_putendl("square: ");
+	ft_putstr("square ");
+	ft_putnbr(map_size);
+	ft_putendl(":");
 	ft_putsquare(square);
-	if (tc != 0)
-		tets[tc - 1] = 1;
 	if (ft_checkend(tets) == 1)
 		return (square);
 	ret = 0;
@@ -102,10 +121,21 @@ int	ft_recursive(unsigned short square, unsigned short offset, unsigned short *t
 				tc++;
 			if (tets[tc] == 0)
 				return (0);
-			newsquare = ft_place(square, offset, tets[tc]);
+			ft_putendl("tet:");
+			print_binary(tets[tc], 4);
+			ft_putendl("");
+			newsquare = ft_place(square, map_size, tets[tc]);
 			tc++;
 		}
-		ret = ft_recursive(newsquare, offset, tets, tc);
+		tet = tets[tc - 1];
+		tets[tc - 1] = 1;
+		ret = ft_recursive(newsquare, map_size, tets, 0);
+		if (ret == 0)
+		{
+			ft_putendl("recursion:");
+			ft_putsquare(square);
+			tets[tc - 1] = tet;
+		}
 	}
 	return (ret);
 }
