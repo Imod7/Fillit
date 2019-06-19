@@ -15,7 +15,16 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int					read_tetrimino(char *buf, uint64_t *n, int bytes)
+/*
+	read_tet checks for:
+		- between every tetrimino there is only one newline
+		- all characters in tet are . or #
+		- every line of a tet = 4 chars followed by newline 
+*/
+
+//read_tetrimino implies that reading happens in the function, but it only checks, so i changed it to check_tet.
+//what is j and n?, j is an index but what does int index?
+int					check_tet(char *buf, uint64_t *n, int bytes)
 {
 	int				j;
 	size_t			htags;
@@ -57,44 +66,6 @@ int					read_tetrimino(char *buf, uint64_t *n, int bytes)
 	return (0);
 }
 
-/*
-	read_tet checks for:
-		- between every tetrimino there is only one newline
-		- all characters in tet are . or #
-		- every line of a tet = 4 chars followed by newline 
-*/
-
-//read_tetrimino implies that reading happens in the function, but it only checks, so i changed it to check_tet.
-//what is j and n?, j is an index but what does int index?
-int					check_tet(char *buf, unsigned short *n, size_t bytes)
-{
-	size_t			j;
-	size_t			htags;
-
-	j = 0;
-	htags = 0;
-	while (j < bytes)
-	{
-		if (j == 20 && buf[j] != '\n')
-			return (-1);
-		if ((endline(j + 1) != 1) && j != 20 && buf[j] != '.' && buf[j] != '#')
-			return (-1);
-		if ((endline(j + 1) == 1) && buf[j] != '\n')
-			return (-1);
-		if (buf[j] == '#')
-		{
-			htags++;
-			*n = tetr_calc(j, *n);
-		}
-		j++;
-	}
-	if (htags != 4)
-		return (-1);
-	if (check_neighbours(*n) < 6)
-		return (-1);
-	return (0);
-}
-
 int					read_file(int fd, t_list **tetr_lst)
 {
 	int				bytes_read;
@@ -111,7 +82,7 @@ int					read_file(int fd, t_list **tetr_lst)
 		num = 0;
 		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
 		printf("buf = '\n%s'\nbytes_read = %d ,num = %llu \n", buf, bytes_read, num);
-		if (read_tetrimino(buf, &num, bytes_read) == -1)
+		if (check_tet(buf, &num, bytes_read) == -1)
 			return (-1);
 		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
 		printf("tet = %llu \n", num);
@@ -130,7 +101,7 @@ int					read_file(int fd, t_list **tetr_lst)
 	{
 		printf(ANSI_COLOR_CYAN "\n========== TETRIMINO => %d ============= \n" ANSI_COLOR_RESET, no_of_tetr);
 		printf("buf = '\n%s'\nbytes_read = %d ,num = %llu \n", buf, bytes_read, num);
-		if (read_tetrimino(buf, &num, bytes_read) == -1)
+		if (check_tet(buf, &num, bytes_read) == -1)
 			return (-1);
 		printf(ANSI_COLOR_YELLOW "TETRIMINO in 64 bits \n" ANSI_COLOR_RESET);
 		printf("tet = %llu \n", num);
