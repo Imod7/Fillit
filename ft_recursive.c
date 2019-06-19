@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/10 15:24:27 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/18 17:11:14 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 19:31:05 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,54 @@ int ft_countbit(unsigned short tet, int map_size)
 	return (count);
 }
 
-//void	ft_cpyend()
+int	ft_place(t_board strip, t_board strip_next, int map_size, uint64_t tet)
+{
+	int			offset;
+	uint64_t	mask;
+
+	offset = 0;
+	mask = 3 << (map_size - 1);
+	offset++;
+	if ((mask & (tet << offset)) == mask)
+		return (0);
+	while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
+		mask = mask << max_width;
+	if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
+	{
+			offset += (max_width - offset % map_size) + (max_width - map_size);
+			strip_next.tet = strip_next.tet << ((max_width - offset % map_size) + (max_width - map_size));
+	}
+	strip.tet = tet << offset;
+	if ((strip.tet & ~strip.state) == strip.tet)
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_placer(t_board *board, int map_size, uint64_t tet)
+{
+	int ret;
+
+	ret = 0;
+	while (ret != 4)
+	{
+		ret += ft_place(board[0], board[1], map_size, tet);
+		ret += ft_place(board[1], board[2], map_size, tet);
+		ret += ft_place(board[2], board[3], map_size, tet);
+		ret += ft_place(board[3], board[3], map_size, tet);
+		if (ft_countbit(board[3].tet, map_size) != 4)
+			return (0);
+	}
+	board[0].state |= board[0].tet;
+	board[1].state |= board[1].tet;	
+	board[2].state |= board[2].tet;
+	board[3].state |= board[3].tet;
+	return (1);
+}
 
 //#define ((tet << offset & ~square) != tet << offset) shift square until tet fits, offset can then be used to shift tet and place; 
 //#define ((max_width - offset % map_size) + (max_width - map_size)) jump  tet to start of next line;
-int ft_place(unsigned short square, int map_size, unsigned short tet)
+/*int ft_place(unsigned short square, int map_size, unsigned short tet)
 {
 	int				offset;
 	unsigned short	mask;
@@ -65,12 +108,6 @@ int ft_place(unsigned short square, int map_size, unsigned short tet)
 	while ((tet << offset & ~square) != (tet << offset) && offset < max_width * max_width)
 	{
 		offset++;
-		while ((mask & (tet << offset)) != mask && mask != 1 && mask != 0 && mask != 32768)
-		{
-			mask = mask << max_width;
-		}
-		if (mask != 1 && mask != 0 && mask != 32768 && offset > 0)
-			offset += (max_width - offset % map_size) + (max_width - map_size);
 		else
 			mask = 3 << (map_size - 1);
 	}
@@ -81,10 +118,10 @@ int ft_place(unsigned short square, int map_size, unsigned short tet)
 		return (0);
 	}
 	return (tet << offset ^ square);
-}
+	}*/
 
 //check if all elements in *tets == 1, causing end of recursion
-int	ft_checkend(unsigned short *tets)
+int	ft_checkend(uint64_t *tets)
 {
 	int i;
 
@@ -98,44 +135,37 @@ int	ft_checkend(unsigned short *tets)
 	return (0);
 }
 
-int	ft_recursive(unsigned short square, int map_size, unsigned short *tets, int tc)
+int	ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc)
 {
-	unsigned short	newsquare;
-	unsigned short	tet;
-	int				ret;
+	t_board		*oldboard;
+	uint64_t	tet;
+	int			placeret;
+	int			ret;
 
-	ft_putstr("square ");
-	ft_putnbr(map_size);
-	ft_putendl(":");
-	ft_putsquare(square);
 	if (ft_checkend(tets) == 1)
-		return (square);
+		return (1);
+	oldboard = (t_board *)ft_memalloc(sizeof(t_board) * 4);
+	memcpy(oldboard, board, sizeof(t_board) * 4);
+	placeret = 0;
 	ret = 0;
 	tc = 0;
 	while (ret == 0)
 	{
-		newsquare = square;
-		while (newsquare == square || newsquare == 0)
+		memcpy(board, oldboard, sizeof(t_board) * 4);
+		while (placeret == 0)
 		{
 			while (tets[tc] == 1)
 				tc++;
 			if (tets[tc] == 0)
 				return (0);
-			ft_putendl("tet:");
-			print_binary(tets[tc], 4);
-			ft_putendl("");
-			newsquare = ft_place(square, map_size, tets[tc]);
+			placeret = ft_placer(board, map_size, tets[tc]);
 			tc++;
 		}
 		tet = tets[tc - 1];
 		tets[tc - 1] = 1;
-		ret = ft_recursive(newsquare, map_size, tets, 0);
+		ret = ft_recursive(board, map_size, tets, 0);
 		if (ret == 0)
-		{
-			ft_putendl("recursion:");
-			ft_putsquare(square);
 			tets[tc - 1] = tet;
-		}
 	}
 	return (ret);
 }
