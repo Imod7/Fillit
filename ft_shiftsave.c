@@ -32,7 +32,7 @@ uint64_t			shift_to_topleft(uint64_t num)
 	size_t			x;
 	size_t			y;
 	uint64_t		temp;
-
+	
 	//printf("Tet before shifting\n");
 	//print_binary(num, 4);
 	//printf("\n");

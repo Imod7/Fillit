@@ -12,41 +12,41 @@
 
 #include "fillit.h"
 
-//num is the current tetrimino
-int					check_neighbours(uint64_t num)
+//changed num to tet so its obvious that we are referring to the current tetrimino
+int					check_neighbours(uint64_t tet)
 {
-	uint64_t		temp;
+	uint64_t		mask;
 	int				neighbours;
 	size_t			i;
 
 	neighbours = 0;
 	i = 0;
 	printf(ANSI_COLOR_YELLOW "Checking neighbours\n" ANSI_COLOR_RESET);
-	//print_binary(num, 4);
+	//print_binary(tet, 4);
 	while (i < 64)
 	{
 		//Checking which bits are set or not
 		//we AND the bit with a 1. if the bit is set the result is 1 
 		//else is 0.
-		temp = num & ((uint64_t)1 << i);
-		//printf(" \n i = %lu, temp = %llu", i, temp);
-		if (temp != 0)
+		mask = tet & ((uint64_t)1 << i);
+		//printf(" \n i = %lu, bit = %llu", i, bit);
+		if (mask != 0)
 		{
 			//Checking if there is another bit set (bit = 1)
 			//4 positions on the left of this bit
-			if (num & (temp >> (4 + 12)))
+			if (tet & (mask >> (4 + 12)))
 				neighbours++;
 			//4 positions on the right of this bit
-			if (num & (temp << (4 + 12)))
+			if (tet & (mask << (4 + 12)))
 				neighbours++;
 			//1 position on the left of this bit
-			if (num & (temp >> 1))
+			if (tet & (mask >> 1))
 			{
 				neighbours++;
 				//printf(" \n one left %d, i= %lu", neighbours, i);
 			}
 			//1 position on the right of this bit
-			if (num & (temp << 1))
+			if (tet & (mask << 1))
 			{
 				neighbours++;
 				//printf(" \n one right %d , i = %lu", neighbours, i);
@@ -54,7 +54,7 @@ int					check_neighbours(uint64_t num)
 		}
 		i++;
 	}
-	printf("n = %llu, neighbours = %d \n", num, neighbours);
+	printf("n = %llu, neighbours = %d \n", tet, neighbours);
 	return (neighbours);
 }
 
@@ -105,11 +105,11 @@ uint64_t			tetr_calc(uint64_t tet_pos, uint64_t tet)
 	return (tet);
 }
 
-int					endline(int num)
+int					endline(int tet)
 {
-	while (num > 0)
-		num = num - 5;
-	if (num == 0)
+	while (tet > 0)
+		tet = tet - 5;
+	if (tet == 0)
 		return (1);
 	return (0);
 }
