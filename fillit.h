@@ -43,13 +43,15 @@ int						ft_recursive(t_board *board, int map_size, uint64_t *tets, int tc);
 void					ft_putbin(int nb);
 void					ft_putsquare(unsigned short square);
 uint64_t				shift_to_topleft(uint64_t num);
-void					initialize_board(unsigned short **board);
+void					initialize_board(uint16_t **board);
+int						initial_boardsize(t_list *tetr_lst);
 void					print_list(t_list **tetr_lst);
 int						check_neighbours(uint64_t num);
 uint64_t				tetr_calc(uint64_t j, uint64_t n);
 int						endline(int num);
 void					print_binary(uint64_t num, int size);
-void					print_board(t_board *board);
+void					print_board(uint16_t *board);
 void					save_tolist(t_list **tetr_lst, uint64_t num);
+int						solver(t_list *tetr_lst, uint16_t **board, size_t size);
 
 #endif

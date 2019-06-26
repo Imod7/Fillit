@@ -13,16 +13,34 @@
 #include "fillit.h"
 #include <stdio.h>
 
-void				print_board(t_board *board)
+void				print_board(uint16_t *board)
 {
-	int				strip;
+	int				bit;
+	int				row;
+	uint16_t		mask;
 
-	strip = 0;
-	while (strip < 4)
+	bit = 0;
+	row = 0;
+	while (row < 16)
 	{
-		print_binary(board[strip].state, 4);
-		strip++;
+		bit = 0;
+		while (bit < 16)
+		{
+			mask = board[row] >> bit;
+			//printf("bit = %d , mask = %d , -- %d \n", bit, mask, mask & 1);
+			if (mask & 1)
+				printf("1 ");
+			else
+				printf("0 ");
+			bit++;
+		}
+		row++;
 		printf("\n");
+		if (row % 4 == 0)
+		{
+			printf("\n");
+			//printf("row = %d \n", row );
+		}
 	}
 }
 

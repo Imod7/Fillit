@@ -80,20 +80,22 @@ void				ft_create_board(t_board *board)
 
 int					main(int argc, char **argv)
 {
-	t_board			*board;
-	int				strip_index;
+	uint16_t		*board;
+	// int				strip_index;
 	int				fd;
 	t_list			*tetr_lst;
 	int				output;
-	int				map_size;
-	unsigned short	square;
+	// int				map_size;
+	// unsigned short	square;
+	size_t			size;
 
-	strip_index = 0;
-	board = (t_board *)malloc(4 * sizeof(t_board));
-	ft_create_board(board);
-	ft_putnbr(board[3].tet);
-	square = 0;
-	map_size = 2;
+	//strip_index = 0;
+	//board = (t_board *)malloc(4 * sizeof(t_board));
+	//ft_create_board(board);
+	//ft_putnbr(board[3].tet);
+	//square = 0;
+	//map_size = 2;
+	board = NULL;
 	if (print_usage(argc) == 0)
 		return (0);
 	else
@@ -110,16 +112,22 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
+		size = initial_boardsize(tetr_lst);
+		printf(ANSI_COLOR_CYAN "\n ========= Initial Board State ========= \n" ANSI_COLOR_RESET);
+		initialize_board(&board);
 		print_board(board);
-		while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
-			map_size++;
-		while (square == 0 && map_size < 16)
-		{
-			ft_putnbr(map_size);
-			ft_putendl(" map_size");
-			square = ft_recursive(board, map_size, lst2arr(tetr_lst), 0);
-			map_size++;
-		}
+		solver(tetr_lst, &board, size);
+		printf(ANSI_COLOR_CYAN "=== Final Board State === \n" ANSI_COLOR_RESET);
+		print_board(board);
+		// while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
+		// 	map_size++;
+		// while (square == 0 && map_size < 16)
+		// {
+		// 	ft_putnbr(map_size);
+		// 	ft_putendl(" map_size");
+		// 	square = ft_recursive(board, map_size, lst2arr(tetr_lst), 0);
+		// 	map_size++;
+		// }
 		close(fd);
 	}
 	return (0);
