@@ -6,32 +6,49 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/10 22:48:53 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/11 15:19:49 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/26 21:37:21 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void				save_tolist(t_list **tetr_lst, uint64_t num)
+t_tetlst	*ft_newtet(uint16_t tet)
 {
-	t_list			*tetrm;
+	t_tetlst	*elem;
 
-	printf("Save tetrimino to the Linked List \n");
-	tetrm = ft_lstnew(&num, 64);
-	ft_lstaddend(tetr_lst, tetrm);
+	elem = (t_tetlst *)malloc(sizeof(t_tetlst));
+	elem->tet = tet;
+	elem->row = 0;
+	elem->col = 0;
+	elem->next = NULL;
+	return (elem);
 }
 
+void		ft_addtet(t_tetlst *tetr_lst, t_tetlst *newtet)
+{
+	while (tetr_lst->next != NULL)
+		tetr_lst = tetr_lst->next;
+	tetr_lst->next = newtet;
+}
+
+void		save_tolist(t_tetlst *tetr_lst, uint16_t tet)
+{
+	t_tetlst			*newtet;
+
+	newtet = ft_newtet(tet);
+	ft_addtet(tetr_lst, newtet);
+}
 /*
 	-- function "shift_to_topleft" --
 	Reading the 64-bit number/tetrimino  
 	and shifting it to the top left
 */
-uint64_t			shift_to_topleft(uint64_t num)
+void		shiftsave(t_tetlst *tetr_lst, uint16_t tet)
 {
 	size_t			i;
 	size_t			x;
 	size_t			y;
-	uint64_t		temp;
+	uint16_t		temp;
 	
 	//printf("Tet before shifting\n");
 	//print_binary(num, 4);
@@ -41,7 +58,7 @@ uint64_t			shift_to_topleft(uint64_t num)
 	y = 16;
 	while (i < 64)
 	{
-		temp = num & ((uint64_t)1 << i);
+		temp = tet & ((uint16_t)1 << i);
 		if (temp != 0)
 		{
 			//printf("temp = %llu, pos = %lu \n", temp, i);
@@ -61,8 +78,8 @@ uint64_t			shift_to_topleft(uint64_t num)
 		//printf("i = %lu \n", i);
 		i++;
 	}
-	num >>= (x + (4 * y));
+	tet >>= (x + (4 * y));
 	//printf("num = %llu \n", num);
 	//print_binary(num, 4);
-	return (num);
+	save_tolist(tetr_lst, tet);
 }

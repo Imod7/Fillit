@@ -6,16 +6,16 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 19:36:38 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/26 20:37:15 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/26 21:05:01 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fillit.h"
 
-void	ft_letters(t_tetlist *lst)
+void	ft_letters(t_tetlst *lst)
 {
-	t_tetlist	*begin;
+	t_tetlst	*begin;
 	int			row;
 	int			lst_index;
 	uint16_t	pos;

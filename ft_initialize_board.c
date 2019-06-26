@@ -6,26 +6,11 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/11 19:14:21 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/11 19:14:25 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/26 21:41:18 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
-
-void				initialize_board(uint16_t **board)
-{
-	size_t			i;
-
-	i = 0;
-	*board = (uint16_t *)malloc(sizeof(uint16_t) * 16);
-	while (i < 16)
-	{
-		(*board)[i] = (uint16_t)malloc(sizeof(uint16_t) * 1);
-		(*board)[i] = 0;
-		//printf("board[%lu] = %d \n", i, board[i]);
-		i++;
-	}
-}
 
 int					square_root(int num)
 {
@@ -46,13 +31,42 @@ int					square_root(int num)
 	return (temp);
 }
 
-int					initial_boardsize(t_list *tetr_lst)
+int	tetlstlen(t_tetlst *tetr_lst)
+{
+	int count;
+
+	count = 0;
+	while (tetr_lst != NULL)
+	{
+		count++;
+		tetr_lst = tetr_lst->next;
+	}
+	return (count);
+}
+
+int					initial_boardsize(t_tetlst *tetr_lst)
 {
 	int				size;
 
-	size = ft_lstlen(tetr_lst);
+	size = tetlstlen(tetr_lst);
 	//printf("\n no of tet = %d", size);
 	size = square_root(size * 4);
 	//printf("\n size = %d", size);
 	return (size);
+}
+
+int				initialize_board(uint16_t **board, t_tetlst *tetr_lst)
+{
+	size_t			i;
+
+	i = 0;
+	*board = (uint16_t *)malloc(sizeof(uint16_t) * 16);
+	while (i < 16)
+	{
+		(*board)[i] = (uint16_t)malloc(sizeof(uint16_t) * 1);
+		(*board)[i] = 0;
+		//printf("board[%lu] = %d \n", i, board[i]);
+		i++;
+	}
+	return (initial_boardsize(tetr_lst));
 }

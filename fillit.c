@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/26 20:35:22 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/26 22:10:39 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int					print_usage(int argc)
 int					main(int argc, char **argv)
 {
 	uint16_t		*board;
-	t_tetlist		*tetr_lst;
+	t_tetlst		*tetr_lst;
 	int				fd;
 	size_t			size;
 
@@ -43,15 +43,14 @@ int					main(int argc, char **argv)
 		if (fd < 0)
 			return (0);
 		tetr_lst = NULL;
-		if (read_file(fd, &tetr_lst) == -1)
+		if (read_file(fd, tetr_lst) == -1)
 		{
 			write(1, "error\n", 6);
 			return (0);
 		}
 		else
-			print_list(&tetr_lst);
-		size = initial_boardsize(tetr_lst);
-		initialize_board(&board);
+			print_list(tetr_lst);
+		size = initialize_board(&board, tetr_lst);
 		solver(tetr_lst, &board, size);
 		ft_letters(tetr_lst);
 		close(fd);
