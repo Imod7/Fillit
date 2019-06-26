@@ -1,4 +1,4 @@
-# fillit_domi
+# fillit_domi ![fillit](https://img.shields.io/badge/typesafe-check-blue.svg)
 
 In file "ft_readtet.c" we have :
 - function "read_file" calls the below functions :

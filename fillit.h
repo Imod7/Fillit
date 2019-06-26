@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/19 18:52:02 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 20:15:34 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #define ANSI_COLOR_MAGENTA	"\x1b[35m"
 #define ANSI_COLOR_YELLOW	"\x1b[33m"
 
-# define max_width			4
+# define max_width			16
 
 typedef struct			s_board
 {

@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/19 17:14:18 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/19 20:10:57 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int					main(int argc, char **argv)
 		}
 		else
 			print_list(&tetr_lst);
+<<<<<<< HEAD
 		size = initial_boardsize(tetr_lst);
 		printf(ANSI_COLOR_CYAN "\n ========= Initial Board State ========= \n" ANSI_COLOR_RESET);
 		initialize_board(&board);
@@ -128,6 +129,16 @@ int					main(int argc, char **argv)
 		// 	square = ft_recursive(board, map_size, lst2arr(tetr_lst), 0);
 		// 	map_size++;
 		// }
+=======
+		while (map_size * map_size < 4 * ft_lstlen(tetr_lst))
+			map_size++;
+		while (ft_recursive(board, map_size, lst2arr(tetr_lst), 0) == 0 && map_size < 16)
+		{
+			ft_putnbr(map_size);
+			ft_putendl(" map_size");
+			map_size++;
+		}
+>>>>>>> 4a5433c8c4360370a286548de3929b4aa455ac1c
 		close(fd);
 	}
 	return (0);
