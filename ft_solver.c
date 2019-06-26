@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 18:27:39 by dsaripap      ########   odam.nl         */
+/*   Updated: 2019/06/26 19:27:55 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int					fill_board(t_list *tetr_lst, uint16_t **board, size_t size)
 		while (col < size)
 		{
 			tet = *(uint64_t *)(temp->content);
-			if ( (can_be_placed(tet, board, size, row, col , 1) == 0))
+			if (can_be_placed(tet, board, size, row, col , 1) == 0)
 			{
 				printf(ANSI_COLOR_GREEN "   It is safe to place the tetrimino \n" ANSI_COLOR_RESET);
 				place_tetrimino(tet, board, size, row, col, 0);
