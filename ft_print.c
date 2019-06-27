@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/09 12:46:58 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 22:02:31 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 15:09:49 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void				print_board(unsigned short *board)
 	}
 }
 
-void				print_binary(uint16_t num, int size)
+void				print_binary(uint64_t num, int size)
 {
 	int				bit;
 	int				row;
@@ -132,8 +132,9 @@ void				print_list(t_tetlst *tetr_lst)
 	printf(ANSI_COLOR_CYAN "\n=== Printing Linked List of Tetriminos ===\n" ANSI_COLOR_RESET);
 	while (tetr_lst != NULL)
 	{
-		printf(" tetr/node %lu -> %hu \n", i, tetr_lst->tet);
+		printf(" tetr/node %lu -> %llu \n", i, tetr_lst->tet);
 		tetr_lst = tetr_lst->next;
 		i++;
 	}
+	ft_putnbr(i);
 }

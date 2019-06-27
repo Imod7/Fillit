@@ -6,16 +6,16 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/19 13:10:20 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 22:21:26 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 14:43:10 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
 //changed num to tet so its obvious that we are referring to the current tetrimino
-int					check_neighbours(uint16_t tet)
+int					check_neighbours(uint64_t tet)
 {
-	uint16_t		mask;
+	uint64_t		mask;
 	int				neighbours;
 	size_t			i;
 
@@ -23,12 +23,12 @@ int					check_neighbours(uint16_t tet)
 	i = 0;
 	printf(ANSI_COLOR_YELLOW "Checking neighbours\n" ANSI_COLOR_RESET);
 	//print_binary(tet, 4);
-	while (i < 16)
+	while (i < 64)
 	{
 		//Checking which bits are set or not
 		//we AND the bit with a 1. if the bit is set the result is 1 
 		//else is 0.
-		mask = tet & ((uint16_t)1 << i);
+		mask = tet & ((uint64_t)1 << i);
 		//printf(" \n i = %lu, bit = %llu", i, bit);
 		if (mask != 0)
 		{
@@ -54,7 +54,7 @@ int					check_neighbours(uint16_t tet)
 		}
 		i++;
 	}
-	printf("n = %hu, neighbours = %d \n", tet, neighbours);
+	printf("n = %llu, neighbours = %d \n", tet, neighbours);
 	return (neighbours);
 }
 
@@ -65,7 +65,7 @@ int					check_neighbours(uint16_t tet)
 	tet_pos	-> is the bit position/index that we are while iterating the bits of the tetrimino
 	tet		-> is our current tetrimino (is a number)
 */
-uint16_t			tetr_calc(uint16_t tet_pos, uint16_t tet)
+uint64_t			tetr_calc(uint64_t tet_pos, uint64_t tet)
 {
 	//printf(ANSI_COLOR_YELLOW " \n Tetrimino Calculation " ANSI_COLOR_RESET);
 	//printf("=====================================\n");
@@ -76,29 +76,29 @@ uint16_t			tetr_calc(uint16_t tet_pos, uint16_t tet)
 	//fix magic numbers
 	if (tet_pos >= 19)
 	{
-		tet |= (uint16_t)1 << (tet_pos - 4 + 12);
+		tet |= (uint64_t)1 << (tet_pos - 4 + 12);
 		//printf(" 000 domi \n");
 	}
 	else if (tet_pos >= 14)
 	{
-		tet |= (uint16_t)1 << (tet_pos - 3 + (12 * 4));
+		tet |= (uint64_t)1 << (tet_pos - 3 + (12 * 4));
 		//printf(" -- domi \n");
 	}
 	else if (tet_pos >= 9)
 	{
-		tet |= (uint16_t)1 << (tet_pos - 2 + (12 * 3));
+		tet |= (uint64_t)1 << (tet_pos - 2 + (12 * 3));
 		//printf("domi \n");
 	}
 	else if (tet_pos >= 4)
 	{
 		//printf("  SHIFTING = %llu \n", (tet_pos - 1 + (12 * 2)));
 		//n |= 1 >> (j - 1 + (12 * 2));
-		tet |= (uint16_t)1 << (tet_pos - 1 + (12 * 2));
+		tet |= (uint64_t)1 << (tet_pos - 1 + (12 * 2));
 		//printf("  tet after 31 shift = %llu \n", tet);
 	}
 	else if (tet_pos < 4)
 	{
-		tet |= (uint16_t)1 << (tet_pos + 12);
+		tet |= (uint64_t)1 << (tet_pos + 12);
 		//printf("j= %lu , n  = %llu \n", j, n);
 	}
 	//printf("After Tetr Calc : tet = %llu \n", tet);

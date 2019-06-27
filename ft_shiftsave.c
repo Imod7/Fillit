@@ -6,13 +6,13 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/10 22:48:53 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 21:37:21 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 15:20:22 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tetlst	*ft_newtet(uint16_t tet)
+t_tetlst	*ft_newtet(uint64_t tet)
 {
 	t_tetlst	*elem;
 
@@ -24,31 +24,38 @@ t_tetlst	*ft_newtet(uint16_t tet)
 	return (elem);
 }
 
-void		ft_addtet(t_tetlst *tetr_lst, t_tetlst *newtet)
+t_tetlst		*ft_addtet(t_tetlst **tetr_lst, t_tetlst *newtet)
 {
-	while (tetr_lst->next != NULL)
-		tetr_lst = tetr_lst->next;
-	tetr_lst->next = newtet;
+	t_tetlst *temp;
+
+	temp = *tetr_lst;
+	while ((*tetr_lst)->next != NULL)
+		*tetr_lst = (*tetr_lst)->next;
+	(*tetr_lst)->next = newtet;
+	return (temp);
 }
 
-void		save_tolist(t_tetlst *tetr_lst, uint16_t tet)
+void		save_tolist(t_tetlst **tetr_lst, uint64_t tet)
 {
 	t_tetlst			*newtet;
 
 	newtet = ft_newtet(tet);
-	ft_addtet(tetr_lst, newtet);
+	if (*tetr_lst == NULL)
+		*tetr_lst = newtet;
+	else
+		*tetr_lst = ft_addtet(tetr_lst, newtet);
 }
 /*
 	-- function "shift_to_topleft" --
 	Reading the 64-bit number/tetrimino  
 	and shifting it to the top left
 */
-void		shiftsave(t_tetlst *tetr_lst, uint16_t tet)
+void		shiftsave(t_tetlst **tetr_lst, uint64_t tet)
 {
 	size_t			i;
 	size_t			x;
 	size_t			y;
-	uint16_t		temp;
+	uint64_t		temp;
 	
 	//printf("Tet before shifting\n");
 	//print_binary(num, 4);
@@ -58,7 +65,7 @@ void		shiftsave(t_tetlst *tetr_lst, uint16_t tet)
 	y = 16;
 	while (i < 64)
 	{
-		temp = tet & ((uint16_t)1 << i);
+		temp = tet & ((uint64_t)1 << i);
 		if (temp != 0)
 		{
 			//printf("temp = %llu, pos = %lu \n", temp, i);

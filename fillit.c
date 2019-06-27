@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/26 22:10:39 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 15:22:51 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int					main(int argc, char **argv)
 		if (fd < 0)
 			return (0);
 		tetr_lst = NULL;
-		if (read_file(fd, tetr_lst) == -1)
+		if (read_file(fd, &tetr_lst) == -1)
 		{
 			write(1, "error\n", 6);
 			return (0);

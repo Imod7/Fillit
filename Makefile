@@ -6,14 +6,14 @@
 #    By: ravan-de <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/05/02 15:57:41 by ravan-de      #+#    #+#                  #
-#    Updated: 2019/06/26 20:32:17 by ravan-de      ########   odam.nl          #
+#    Updated: 2019/06/27 14:19:28 by ravan-de      ########   odam.nl          #
 #                                                                              #
 #******************************************************************************#
 
 NAME = fillit
 
-OBJ = ft_putsquare.o ft_putbin.o ft_letters.o ft_readtet.o ft_shiftsave.o \
-	  ft_initialize_board.o ft_print.o ft_isvalid.o ft_solver.o fillit.o
+OBJ = ft_letters.o ft_readtet.o ft_shiftsave.o ft_initialize_board.o \
+		ft_print.o ft_isvalid.o ft_solver.o fillit.o
 
 FLAGS = -Wall -Wextra -Werror
 

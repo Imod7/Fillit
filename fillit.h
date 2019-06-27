@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 22:16:58 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 15:21:27 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 typedef struct			s_tetlst
 {
-	uint16_t			tet;
+	uint64_t			tet;
 	short				row;
 	short				col;
 	struct s_tetlst		*next;
@@ -37,13 +37,13 @@ typedef struct			s_tetlst
 
 void					ft_letters(t_tetlst *tetr_lst);
 void					print_list(t_tetlst *tetr_lst);
-void					print_binary(uint16_t num, int size);
-int						read_file(int fd, t_tetlst *tetr_lst);
+void					print_binary(uint64_t num, int size);
+int						read_file(int fd, t_tetlst **tetr_lst);
 int						initialize_board(uint16_t **board, t_tetlst *tetr_lst);
-int						check_neighbours(uint16_t num);
-uint16_t				tetr_calc(uint16_t j, uint16_t n);
+int						check_neighbours(uint64_t num);
+uint64_t				tetr_calc(uint64_t tet_pos, uint64_t tet);
 int						endline(int num);
-void					shiftsave(t_tetlst *tetr_lst, uint16_t num);
+void					shiftsave(t_tetlst **tetr_lst, uint64_t num);
 int						solver(t_tetlst *tetr_lst, uint16_t **board, size_t size);
 
 #endif

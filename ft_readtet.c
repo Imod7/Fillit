@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:41:34 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/26 22:16:40 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 15:22:20 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 //read_tetrimino implies that reading happens in the function, but it only checks, so i changed it to check_tet.
 //changed j to tet_pos so its more obvious that its the position/index while we iterate the tetrimino bit by bit
 //also changed *n to *tet so its more obvious that its the tetrimino (or the number that represents the tetrimino)
-int					check_tet(char *buf, uint16_t *tet, int bytes)
+int					check_tet(char *buf, uint64_t *tet, int bytes)
 {
 	int				tet_pos;
 	size_t			htags;
@@ -53,7 +53,7 @@ int					check_tet(char *buf, uint16_t *tet, int bytes)
 		{
 			htags++;
 			//printf(" \n we are in pos = %d \n", tet_pos);
-			*tet = tetr_calc((uint16_t)tet_pos, *tet);
+			*tet = tetr_calc((uint64_t)tet_pos, *tet);
 		}
 		tet_pos++;
 	}
@@ -65,10 +65,10 @@ int					check_tet(char *buf, uint16_t *tet, int bytes)
 	return (0);
 }
 
-int					read_file(int fd, t_tetlst *tetr_lst)
+int					read_file(int fd, t_tetlst **tetr_lst)
 {
 	int				bytes_read;
-	uint16_t		tet;
+	uint64_t		tet;
 	char			buf[BUF_SIZE];
 	int				no_of_tetr;
 
