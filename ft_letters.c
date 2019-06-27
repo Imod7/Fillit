@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 19:36:38 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/27 17:22:48 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/27 17:54:47 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int		ft_seperatet(uint16_t pos, size_t posrow, t_tetlst *lst, size_t lst_index)
 		if (tetrow + lst->row == posrow)
 		{
 			tetbit = (lst->tet << lst->col) >> (tetrow * 16);
+			if (!tetbit)
+				break ;
 			if ((tetbit & pos) == pos)
 			{
 				ft_putchar(lst_index + 65);
