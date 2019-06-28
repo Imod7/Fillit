@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/27 15:21:27 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/06/28 18:23:15 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 typedef struct			s_tetlst
 {
 	uint64_t			tet;
-	short				row;
-	short				col;
+	size_t				row;
+	size_t				col;
 	struct s_tetlst		*next;
 }						t_tetlst;
 
