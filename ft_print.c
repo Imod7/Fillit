@@ -6,48 +6,19 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/09 12:46:58 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/27 15:09:49 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 15:24:59 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include <stdio.h>
 
-void				print_board(unsigned short *board)
+void	print_binary(uint64_t num, int size)
 {
-	int				bit;
-	int				row;
-	unsigned short	mask;
-
-	bit = 0;
-	//printf("board[%d] = %d \n", 22, board[22]);
-	row = 0;
-	while (row < 16)
-	{
-		bit = 0;
-		//printf("board[%d] = %d \n", row, board[row]);
-		while (bit < 16)
-		{
-			
-			mask = board[row] >> bit;
-			//printf("bit = %d , mask = %d , -- %d \n", bit, mask, mask & 1);
-			if (mask & 1)
-				printf("1 ");
-			else
-				printf("0 ");
-			bit++;
-		}
-		row++;
-		printf("\n");
-	}
-}
-
-void				print_binary(uint64_t num, int size)
-{
-	int				bit;
-	int				row;
-	int 			col;
-	uint64_t		mask;
+	int			bit;
+	int			row;
+	int			col;
+	uint64_t	mask;
 
 	bit = 0;
 	row = 0;
@@ -57,7 +28,6 @@ void				print_binary(uint64_t num, int size)
 		while (col < (size * size))
 		{
 			mask = num >> bit;
-			//printf("\n mask = %llu \n", mask);
 			if (mask & 1)
 				printf("1 ");
 			else
@@ -70,61 +40,7 @@ void				print_binary(uint64_t num, int size)
 	}
 }
 
-void				print_binary_orig(unsigned short num, int size)
-{
-	int				bit;
-	int				row;
-	int 			col;
-	unsigned short	mask;
-
-	bit = 0;
-	row = 0;
-	while (row < size)
-	{
-		col = 0;
-		while (col < size)
-		{
-			mask = num >> bit;
-			if (mask & 1)
-				printf("1 ");
-			else
-				printf("0 ");
-			bit++;
-			col++;
-		}
-		row++;
-		printf("\n");
-	}
-}
-
-void				print_binary_d(uint64_t num, int size)
-{
-	int				bit;
-	int				row;
-	int 			col;
-	unsigned short	mask;
-
-	bit = 0;
-	row = 0;
-	while (row < size)
-	{
-		col = 0;
-		while (col < size)
-		{
-			mask = num >> bit;
-			if (mask & 1)
-				printf("1 ");
-			else
-				printf("0 ");
-			bit++;
-			col++;
-		}
-		row++;
-		printf("\n");
-	}
-}
-
-void				print_list(t_tetlst *tetr_lst)
+void	print_list(t_tetlst *tetr_lst)
 {
 	size_t			i;
 

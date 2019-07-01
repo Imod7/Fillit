@@ -6,7 +6,7 @@
 #    By: dsaripap <marvin@codam.nl>                   +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/03/27 14:38:43 by dsaripap      #+#    #+#                  #
-#    Updated: 2019/05/15 17:41:41 by dsaripap      ########   odam.nl          #
+#    Updated: 2019/07/01 15:37:12 by ravan-de      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ SRC = ft_memset.c \
 	  ft_lstsort.c \
 	  ft_del.c \
 	  ft_strreplace.c \
+	  ft_recursive_power.c \
 	  get_next_line.c
 
 OBJ = $(SRC:%.c=%.o)

@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:38:43 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/27 15:22:51 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 16:16:21 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,19 @@ int					main(int argc, char **argv)
 	tetr_lst = NULL;
 	if (print_usage(argc) == 0)
 		return (0);
-	else
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		return (0);
+	if (read_file(fd, &tetr_lst) == -1)
 	{
-		fd = open(argv[1], O_RDONLY);
-		if (fd < 0)
-			return (0);
-		tetr_lst = NULL;
-		if (read_file(fd, &tetr_lst) == -1)
-		{
-			write(1, "error\n", 6);
-			return (0);
-		}
-		else
-			print_list(tetr_lst);
-		size = initialize_board(&board, tetr_lst);
-		solver(tetr_lst, &board, size);
-		ft_letters(tetr_lst);
-		close(fd);
+		write(2, "error\n", 6);
+		return (0);
 	}
+	print_list(tetr_lst);
+	size = initialize_board(&board, tetr_lst);
+	size = solver(tetr_lst, &board, size);
+	ft_printboard(tetr_lst, size);
+	ft_free(tetr_lst, &board);
+	close(fd);
 	return (0);
 }

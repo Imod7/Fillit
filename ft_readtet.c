@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/31 14:41:34 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/06/27 15:22:20 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 15:57:19 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,11 @@ int					read_file(int fd, t_tetlst **tetr_lst)
 	{
 		if (check_tet(buf, &tet, bytes_read) == -1)
 			return (-1);
-		//shifting and saving combined in one convenient package
 		shiftsave(tetr_lst, tet);
 		no_of_tetr++;
 		return (0);
 	}
-	//If bytes_read != 21 or bytes_read != 20 or no newline at the EOF
+	//If bytes_read != 21 or bytes_read != 20 or no newline at the EOF or too many tets
 	else
 		return (-1);
 }

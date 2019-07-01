@@ -6,19 +6,18 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/28 19:17:56 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 17:41:22 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int					place_tetrimino(t_tetlst *tetlst, uint16_t **board)
+int			place_tetrimino(t_tetlst *tetlst, uint16_t **board)
 {
 	uint16_t		tetbit;
 	size_t			tetrow;
 
 	tetrow = 0;
-    // iterate through all the bits of the tetrimino
 	while (tetrow < 4)
 	{
 		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
@@ -28,13 +27,12 @@ int					place_tetrimino(t_tetlst *tetlst, uint16_t **board)
 	return (0);
 }
 
-int					remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
+int			remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
 {
 	uint16_t		tetbit;
 	size_t			tetrow;
 
 	tetrow = 0;
-	// iterate through all the bits of the tetrimino
 	while (tetrow < 4)
 	{
 		tetbit = (tetlst->tet << tetlst->col) >> (tetrow * 16);
@@ -44,7 +42,7 @@ int					remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
 	return (0);
 }
 
-int					can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
+int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 {
 	uint16_t		tetbit;
 	size_t			tetrow;
@@ -53,13 +51,13 @@ int					can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	tetrow = 0;
 	while (tetrow < 4)
 	{
-		tetbit = (tetlst->tet << tetlst->col) >> (tetrow * 16);
+		tetbit = (uint16_t)(tetlst->tet << tetlst->col) >> (tetrow * 16);
 		if (!tetbit)
-			break;
-		size_limit = ((*board)[tetlst->row + tetrow] | tetbit);
+			break ;
+		size_limit = (uint16_t)((*board)[tetlst->row + tetrow] | tetbit);
 		if ((size_limit >> size) != 0)
 			return (1);
-		if (tetlst->row + tetrow > size - 1)
+		if ((tetlst->row + tetrow) > (size - 1))
 			return (1);
 		if (((*board)[tetlst->row + tetrow] & tetbit) != 0)
 			return (1);
@@ -68,7 +66,7 @@ int					can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	return (0);
 }
 
-int					fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
+int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 {
 	tetr_lst->row = 0;
 	while (tetr_lst->row < size)
@@ -92,12 +90,13 @@ int					fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 				printf(ANSI_COLOR_RED "            Cannot be placed in board[%zu][%zu], size = %lu \n" ANSI_COLOR_RESET, tetr_lst->row, tetr_lst->col, size);
 			tetr_lst->col++;
 		}
+		ft_putendl("inf loop");
 		tetr_lst->row++;
 	}
 	return (0);
 }
 
-int					solver(t_tetlst *tetr_lst, uint16_t **board, size_t size)
+int			solver(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 {
 	while (size < 16)
 	{
@@ -106,5 +105,5 @@ int					solver(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 		else
 			break ;
 	}
-	return (0);
+	return (size);
 }

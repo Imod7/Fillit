@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/28 18:23:15 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 16:19:30 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct			s_tetlst
 	struct s_tetlst		*next;
 }						t_tetlst;
 
-void					ft_letters(t_tetlst *tetr_lst);
+void					ft_printboard(t_tetlst *tetr_lst, size_t size);
+void					ft_free(t_tetlst *tetr_lst, uint16_t **board);
 void					print_list(t_tetlst *tetr_lst);
 void					print_binary(uint64_t num, int size);
 int						read_file(int fd, t_tetlst **tetr_lst);

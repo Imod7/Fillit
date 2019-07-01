@@ -6,23 +6,22 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/11 19:14:21 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/26 21:41:18 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/01 16:24:37 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-int					square_root(int num)
+int	square_root(int num)
 {
-	int				temp;
-	int				res;
+	int	temp;
+	int	res;
 
 	temp = 0;
 	res = 0;
 	while (res <= num)
 	{
 		res = temp * temp;
-		//printf("\n temp = %d", temp);
 		if (res == num)
 			return (temp);
 		temp++;
@@ -44,28 +43,24 @@ int	tetlstlen(t_tetlst *tetr_lst)
 	return (count);
 }
 
-int					initial_boardsize(t_tetlst *tetr_lst)
+int	initial_boardsize(t_tetlst *tetr_lst)
 {
-	int				size;
+	int	size;
 
 	size = tetlstlen(tetr_lst);
-	//printf("\n no of tet = %d", size);
 	size = square_root(size * 4);
-	//printf("\n size = %d", size);
 	return (size);
 }
 
-int				initialize_board(uint16_t **board, t_tetlst *tetr_lst)
+int	initialize_board(uint16_t **board, t_tetlst *tetr_lst)
 {
-	size_t			i;
+	size_t	i;
 
 	i = 0;
 	*board = (uint16_t *)malloc(sizeof(uint16_t) * 16);
 	while (i < 16)
 	{
-		(*board)[i] = (uint16_t)malloc(sizeof(uint16_t) * 1);
 		(*board)[i] = 0;
-		//printf("board[%lu] = %d \n", i, board[i]);
 		i++;
 	}
 	return (initial_boardsize(tetr_lst));
