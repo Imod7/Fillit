@@ -51,6 +51,8 @@ int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	tetrow = 0;
 	while (tetrow < 4)
 	{
+                if (tetrow + tetlst->row > 15)
+                { return (1);}
 		tetbit = (uint16_t)(tetlst->tet << tetlst->col) >> (tetrow * 16);
 		if (!tetbit)
 			break ;
