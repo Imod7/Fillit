@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/04 21:56:33 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 22:05:08 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	uint16_t		size_limit;
 
 	tetrow = 0;
-	ft_putnbr(tetlst->row);
 	while (tetrow < 4)
 	{
 		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
@@ -100,14 +99,10 @@ int			lstcmp(uint64_t tet, uint64_t *prevlst)
 
 int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 {
-	//int			tcount;
 	t_tetlst	*prevtet;
 	uint64_t	*prevlst;
-	int i;
 	t_tetlst	*newtet;
 
-	//tcount = 0;
-	i = 0;
 	prevlst = malloc(sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
 	ft_bzero(prevlst, sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
 	newtet = tetr_lst;
@@ -121,8 +116,6 @@ int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 			return (1);
 		}
 	}
-	print_binary(newtet->tet, 4);
-	ft_putendl("start");
 	newtet->row = 0;
 	while (newtet->row < size)
 	{
@@ -133,8 +126,6 @@ int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 			{
 				place_tetrimino(newtet, board);
 				lstcmp(newtet->tet, prevlst);
-				ft_putendl("just placed: ");
-				printlst(newtet);
 				if (fill_board(tetr_lst, board, size) == 1)
 				{
 					free(prevlst);
@@ -162,11 +153,6 @@ int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 				}
 				prevtet->row = 0;
 				prevtet->col = 0;
-				prevlst[i] = 0;
-				ft_putendl("prevtet");
-				printlst(prevtet);
-				ft_putendl("removed prevtet");
-				ft_printboard(tetr_lst, size);
 			}
 			else
 				newtet->col++;
