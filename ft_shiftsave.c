@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/10 22:48:53 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/01 15:21:50 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 16:59:47 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_tetlst	*ft_newtet(uint64_t tet)
 	elem->tet = tet;
 	elem->row = 0;
 	elem->col = 0;
+	elem->placed = 0;
 	elem->next = NULL;
 	return (elem);
 }

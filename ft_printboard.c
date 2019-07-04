@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 19:36:38 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/07/04 15:50:54 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 21:28:23 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		tet_cmp(uint16_t pos, size_t posrow, t_tetlst *lst, size_t lst_index)
 		ft_putchar('.');
 		return (1);
 	}
+	if (lst->placed == 0)
+		return (0);
 	while (tetrow < 4)
 	{
 		if (tetrow + lst->row == posrow)

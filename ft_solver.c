@@ -6,11 +6,11 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/04 15:52:14 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 21:56:33 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "fillit.h"	
 
 int			place_tetrimino(t_tetlst *tetlst, uint16_t **board)
 {
@@ -24,6 +24,7 @@ int			place_tetrimino(t_tetlst *tetlst, uint16_t **board)
 		(*board)[tetlst->row + tetrow] |= tetbit;
 		tetrow++;
 	}
+	tetlst->placed = 1;
 	return (0);
 }
 
@@ -39,6 +40,7 @@ int			remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
 		(*board)[tetlst->row + tetrow] &= ~tetbit;
 		tetrow++;
 	}
+	tetlst->placed = 0;
 	return (0);
 }
 
@@ -49,6 +51,7 @@ int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	uint16_t		size_limit;
 
 	tetrow = 0;
+	ft_putnbr(tetlst->row);
 	while (tetrow < 4)
 	{
 		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
@@ -66,33 +69,113 @@ int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	return (0);
 }
 
+int	check_end(t_tetlst	*tetr_lst)
+{
+	t_tetlst	*temp;
+
+	temp = tetr_lst;
+	while (temp->placed == 1)
+	{
+		temp = temp->next;
+		if (temp == NULL)
+			return (1);
+	}
+	return (0);
+}
+
+int			lstcmp(uint64_t tet, uint64_t *prevlst)
+{
+	size_t lst_index;
+
+	lst_index = 0;
+	while(prevlst[lst_index] != 0)
+	{
+		if (tet == prevlst[lst_index])
+			return (1);
+		lst_index++;
+	}
+	prevlst[lst_index] = tet;
+	return (0);
+}
+
 int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 {
-	tetr_lst->row = 0;
-	while (tetr_lst->row < size)
+	//int			tcount;
+	t_tetlst	*prevtet;
+	uint64_t	*prevlst;
+	int i;
+	t_tetlst	*newtet;
+
+	//tcount = 0;
+	i = 0;
+	prevlst = malloc(sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
+	ft_bzero(prevlst, sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
+	newtet = tetr_lst;
+	prevtet = NULL;
+	while (newtet->placed == 1)
 	{
-		tetr_lst->col = 0;
-		while (tetr_lst->col < size)
+		newtet = newtet->next;
+		if (newtet == NULL)
 		{
-			if (can_be_placed(tetr_lst, board, size) == 0)
+			free(prevlst);
+			return (1);
+		}
+	}
+	print_binary(newtet->tet, 4);
+	ft_putendl("start");
+	newtet->row = 0;
+	while (newtet->row < size)
+	{
+		newtet->col = 0;
+		while (newtet->col < size)
+		{
+			if (can_be_placed(newtet, board, size) == 0)
 			{
-				printf(ANSI_COLOR_GREEN "   It is safe to place the tetrimino \n" ANSI_COLOR_RESET);
-				place_tetrimino(tetr_lst, board);
-				if (tetr_lst->next == NULL || fill_board(tetr_lst->next, board, size) == 1)
+				place_tetrimino(newtet, board);
+				lstcmp(newtet->tet, prevlst);
+				ft_putendl("just placed: ");
+				printlst(newtet);
+				if (fill_board(tetr_lst, board, size) == 1)
 				{
-					printf("   RECURSION Run Successfully for tet %llu @ (%lu, %lu)\n", tetr_lst->tet, tetr_lst->row, tetr_lst->col);
+					free(prevlst);
 					return (1);
 				}
-				printf(ANSI_COLOR_RED "   Removing the tetrimino \n" ANSI_COLOR_RESET);
-				remove_tetrimino(tetr_lst, board);
+				prevtet = newtet;
+				remove_tetrimino(prevtet, board);
+				while (lstcmp(newtet->tet, prevlst) == 1)
+				{
+					newtet = newtet->next;
+					if (newtet == NULL)
+					{
+						free(prevlst);
+						return (0);
+					}
+					while (newtet->placed == 1)
+					{
+						newtet = newtet->next;
+						if (newtet == NULL)
+						{
+							free(prevlst);
+							return (0);
+						}
+					}
+				}
+				prevtet->row = 0;
+				prevtet->col = 0;
+				prevlst[i] = 0;
+				ft_putendl("prevtet");
+				printlst(prevtet);
+				ft_putendl("removed prevtet");
+				ft_printboard(tetr_lst, size);
 			}
 			else
-				printf(ANSI_COLOR_RED "            Cannot be placed in board[%zu][%zu], size = %lu \n" ANSI_COLOR_RESET, tetr_lst->row, tetr_lst->col, size);
-			tetr_lst->col++;
+				newtet->col++;
 		}
-		ft_putendl("inf loop");
-		tetr_lst->row++;
+		newtet->row++;
 	}
+	newtet->row = 0;
+	newtet->col = 0;
+	free(prevlst);
 	return (0);
 }
 

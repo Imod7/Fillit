@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/11 19:14:21 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/01 16:24:37 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 17:32:27 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	square_root(int num)
 
 int	tetlstlen(t_tetlst *tetr_lst)
 {
-	int count;
+	size_t count;
 
 	count = 0;
 	while (tetr_lst != NULL)
@@ -45,7 +45,7 @@ int	tetlstlen(t_tetlst *tetr_lst)
 
 int	initial_boardsize(t_tetlst *tetr_lst)
 {
-	int	size;
+	size_t	size;
 
 	size = tetlstlen(tetr_lst);
 	size = square_root(size * 4);

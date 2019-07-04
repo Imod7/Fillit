@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/01 16:19:30 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 18:54:39 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,16 @@ typedef struct			s_tetlst
 	uint64_t			tet;
 	size_t				row;
 	size_t				col;
+	size_t				placed;
 	struct s_tetlst		*next;
 }						t_tetlst;
 
+void					printlst(t_tetlst *tetlst);
 void					ft_printboard(t_tetlst *tetr_lst, size_t size);
 void					ft_free(t_tetlst *tetr_lst, uint16_t **board);
 void					print_list(t_tetlst *tetr_lst);
 void					print_binary(uint64_t num, int size);
+int						tetlstlen(t_tetlst *tetr_lst);
 int						read_file(int fd, t_tetlst **tetr_lst);
 int						initialize_board(uint16_t **board, t_tetlst *tetr_lst);
 int						check_neighbours(uint64_t num);

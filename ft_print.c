@@ -6,12 +6,33 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/09 12:46:58 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/01 15:24:59 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 18:36:26 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include <stdio.h>
+
+void	printlst(t_tetlst *tetlst)
+{
+	if (tetlst == NULL)
+		ft_putendl("nul");
+	else
+	{
+		print_binary(tetlst->tet, 4);
+		ft_putstr("row: ");
+		ft_putnbr(tetlst->row);
+		ft_putendl("");
+		ft_putstr("col: ");
+		ft_putnbr(tetlst->col);
+		ft_putendl("");
+		if (tetlst->placed == 1)
+			ft_putendl("placed");
+		else
+			ft_putendl("not placed");
+		ft_putendl("");
+	}	
+}
 
 void	print_binary(uint64_t num, int size)
 {
