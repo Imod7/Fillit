@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/01 17:41:22 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 15:52:14 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
 	tetrow = 0;
 	while (tetrow < 4)
 	{
-		tetbit = (tetlst->tet << tetlst->col) >> (tetrow * 16);
+		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
 		(*board)[tetlst->row + tetrow] &= ~tetbit;
 		tetrow++;
 	}
@@ -51,7 +51,7 @@ int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
 	tetrow = 0;
 	while (tetrow < 4)
 	{
-		tetbit = (uint16_t)(tetlst->tet << tetlst->col) >> (tetrow * 16);
+		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
 		if (!tetbit)
 			break ;
 		size_limit = (uint16_t)((*board)[tetlst->row + tetrow] | tetbit);

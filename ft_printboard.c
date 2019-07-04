@@ -6,7 +6,7 @@
 /*   By: ravan-de <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 19:36:38 by ravan-de      #+#    #+#                 */
-/*   Updated: 2019/07/01 15:53:10 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 15:50:54 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		tet_cmp(uint16_t pos, size_t posrow, t_tetlst *lst, size_t lst_index)
 	{
 		if (tetrow + lst->row == posrow)
 		{
-			tetbit = (lst->tet << lst->col) >> (tetrow * 16);
+			tetbit = (uint16_t)((lst->tet << lst->col) >> (tetrow * 16));
 			if ((tetbit & pos) == pos)
 			{
 				ft_putchar(lst_index + 65);
