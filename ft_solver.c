@@ -6,81 +6,11 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/26 18:27:35 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/04 22:05:08 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/09 19:48:39 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"	
-
-int			place_tetrimino(t_tetlst *tetlst, uint16_t **board)
-{
-	uint16_t		tetbit;
-	size_t			tetrow;
-
-	tetrow = 0;
-	while (tetrow < 4)
-	{
-		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
-		(*board)[tetlst->row + tetrow] |= tetbit;
-		tetrow++;
-	}
-	tetlst->placed = 1;
-	return (0);
-}
-
-int			remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
-{
-	uint16_t		tetbit;
-	size_t			tetrow;
-
-	tetrow = 0;
-	while (tetrow < 4)
-	{
-		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
-		(*board)[tetlst->row + tetrow] &= ~tetbit;
-		tetrow++;
-	}
-	tetlst->placed = 0;
-	return (0);
-}
-
-int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
-{
-	uint16_t		tetbit;
-	size_t			tetrow;
-	uint16_t		size_limit;
-
-	tetrow = 0;
-	while (tetrow < 4)
-	{
-		tetbit = (uint16_t)((tetlst->tet << tetlst->col) >> (tetrow * 16));
-		if (!tetbit)
-			break ;
-		size_limit = (uint16_t)((*board)[tetlst->row + tetrow] | tetbit);
-		if ((size_limit >> size) != 0)
-			return (1);
-		if ((tetlst->row + tetrow) > (size - 1))
-			return (1);
-		if (((*board)[tetlst->row + tetrow] & tetbit) != 0)
-			return (1);
-		tetrow++;
-	}
-	return (0);
-}
-
-int	check_end(t_tetlst	*tetr_lst)
-{
-	t_tetlst	*temp;
-
-	temp = tetr_lst;
-	while (temp->placed == 1)
-	{
-		temp = temp->next;
-		if (temp == NULL)
-			return (1);
-	}
-	return (0);
-}
 
 int			lstcmp(uint64_t tet, uint64_t *prevlst)
 {
@@ -97,82 +27,160 @@ int			lstcmp(uint64_t tet, uint64_t *prevlst)
 	return (0);
 }
 
-int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
+int			place_tetrimino(t_tetlst *tetlst, uint16_t **board, uint64_t *prevlst)
 {
-	t_tetlst	*prevtet;
+	uint16_t		tetbit;
+	size_t			tetrow;
+
+	tetrow = 0;
+	while (tetrow < 4)
+	{
+		tetbit = (uint16_t)((uint64_t)(tetlst->tet << tetlst->col) >> (tetrow * 16));
+		(*board)[tetlst->row + tetrow] |= tetbit;
+		tetrow++;
+	}
+	lstcmp(tetlst->tet, prevlst);
+	tetlst->placed = 1;
+	ft_putendl("placed:");
+	printlst(tetlst);
+	ft_putendl("");
+	return (0);
+}
+
+int			remove_tetrimino(t_tetlst *tetlst, uint16_t **board)
+{
+	uint16_t		tetbit;
+	size_t			tetrow;
+
+	tetrow = 0;
+	while (tetrow < 4)
+	{
+		tetbit = (uint16_t)((uint64_t)(tetlst->tet << tetlst->col) >> (tetrow * 16));
+		(*board)[tetlst->row + tetrow] &= ~tetbit;
+		tetrow++;
+	}
+	tetlst->placed = 0;
+	tetlst->col = 0;
+	tetlst->row = 0;
+	ft_putendl("removed:");
+	printlst(tetlst);
+	ft_putendl("");
+	return (0);
+}
+
+int			can_be_placed(t_tetlst *tetlst, uint16_t **board, size_t size)
+{
+	uint16_t		tetbit;
+	size_t			tetrow;
+	uint16_t		size_limit;
+
+	tetrow = 0;
+	while (tetrow < 4)
+	{
+		tetbit = (uint16_t)((uint64_t)(tetlst->tet << tetlst->col) >> (tetrow * 16));
+		if (!tetbit)
+			break ;
+		size_limit = ((*board)[tetlst->row + tetrow] | tetbit);
+		if ((size_limit >> size) != 0)
+			return (1);
+		if ((tetlst->row + tetrow) > (size - 1))
+			return (1);
+		if (((*board)[tetlst->row + tetrow] & tetbit) != 0)
+			return (1);
+		tetrow++;
+	}
+	return (0);
+}
+
+t_tetlst	*replace(t_tetlst *tetr_lst, t_tetlst *tet, uint16_t **board, uint64_t *prevlst)
+{
+	t_tetlst	*newtet;
+
+	remove_tetrimino(tet, board);
+	newtet = tetr_lst;
+	while (lstcmp(newtet->tet, prevlst) == 1 || newtet->placed == 1)
+	{
+		newtet = newtet->next;
+		if (newtet == NULL)
+		{
+			free(prevlst);
+			return (NULL);
+		}
+	}
+	return (newtet);
+}
+
+int			move_tet(t_tetlst *tetr_lst, uint16_t **board, size_t size)
+{
 	uint64_t	*prevlst;
 	t_tetlst	*newtet;
 
 	prevlst = malloc(sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
 	ft_bzero(prevlst, sizeof(uint64_t) * (tetlstlen(tetr_lst) + 1));
+
 	newtet = tetr_lst;
-	prevtet = NULL;
 	while (newtet->placed == 1)
 	{
 		newtet = newtet->next;
 		if (newtet == NULL)
 		{
 			free(prevlst);
-			return (1);
+			return (0);
 		}
 	}
-	newtet->row = 0;
-	while (newtet->row < size)
+	while (newtet != NULL)
 	{
 		newtet->col = 0;
 		while (newtet->col < size)
 		{
 			if (can_be_placed(newtet, board, size) == 0)
 			{
-				place_tetrimino(newtet, board);
-				lstcmp(newtet->tet, prevlst);
-				if (fill_board(tetr_lst, board, size) == 1)
+				place_tetrimino(newtet, board, prevlst);
+				ft_putendl("Board state:");
+				ft_printboard(tetr_lst, size);
+				ft_putendl("\n");
+				if (move_tet(tetr_lst, board, size) == 1)
+				{
+					newtet = replace(tetr_lst, newtet, board, prevlst);
+					if (newtet == NULL)
+						return (1);
+				}
+				else
 				{
 					free(prevlst);
-					return (1);
+					return (0);
 				}
-				prevtet = newtet;
-				remove_tetrimino(prevtet, board);
-				while (lstcmp(newtet->tet, prevlst) == 1)
-				{
-					newtet = newtet->next;
-					if (newtet == NULL)
-					{
-						free(prevlst);
-						return (0);
-					}
-					while (newtet->placed == 1)
-					{
-						newtet = newtet->next;
-						if (newtet == NULL)
-						{
-							free(prevlst);
-							return (0);
-						}
-					}
-				}
-				prevtet->row = 0;
-				prevtet->col = 0;
+				ft_putendl("Board state:");
+				ft_printboard(tetr_lst, size);
+				ft_putendl("\n");
 			}
 			else
 				newtet->col++;
 		}
 		newtet->row++;
+		if (newtet->row == 16)
+		{
+			newtet->row = 0;
+			newtet->col = 0;
+			newtet = newtet->next;
+		}
 	}
-	newtet->row = 0;
-	newtet->col = 0;
 	free(prevlst);
-	return (0);
+	return (1);
 }
 
-int			solver(t_tetlst *tetr_lst, uint16_t **board, size_t size)
+int			fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size)
 {
-	while (size < 16)
+	int			ret;
+
+	ret = 1;
+	while (ret == 1 && size < 16)
 	{
-		if (fill_board(tetr_lst, board, size) == 0)
+		ret = move_tet(tetr_lst, board, size);
+		if (ret == 1)
 			size++;
-		else
-			break ;
+		if (size == 5)
+			return (size);
 	}
 	return (size);
 }

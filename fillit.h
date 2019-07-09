@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/05/18 18:09:47 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/07/04 18:54:39 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/09 18:08:37 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,6 @@ int						check_neighbours(uint64_t num);
 uint64_t				tetr_calc(uint64_t tet_pos, uint64_t tet);
 int						endline(int num);
 void					shiftsave(t_tetlst **tetr_lst, uint64_t num);
-int						solver(t_tetlst *tetr_lst, uint16_t **board, size_t size);
+int						fill_board(t_tetlst *tetr_lst, uint16_t **board, size_t size);
 
 #endif

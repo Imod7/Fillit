@@ -1,0 +1,11 @@
+move tet to first available position
+
+if can place: place
+else: try next tet
+
+if recursion(no tets fit): remove prevtet, move next tet to first available position
+
+if can place: place
+else: try next tet
+
+etc.
