@@ -6,7 +6,7 @@
 /*   By: dsaripap <marvin@codam.nl>                   +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/19 13:10:20 by dsaripap      #+#    #+#                 */
-/*   Updated: 2019/06/27 14:43:10 by ravan-de      ########   odam.nl         */
+/*   Updated: 2019/07/04 22:17:27 by ravan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int					check_neighbours(uint64_t tet)
 
 	neighbours = 0;
 	i = 0;
-	printf(ANSI_COLOR_YELLOW "Checking neighbours\n" ANSI_COLOR_RESET);
 	//print_binary(tet, 4);
 	while (i < 64)
 	{
@@ -54,7 +53,6 @@ int					check_neighbours(uint64_t tet)
 		}
 		i++;
 	}
-	printf("n = %llu, neighbours = %d \n", tet, neighbours);
 	return (neighbours);
 }
 
